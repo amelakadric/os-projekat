@@ -1,0 +1,85 @@
+GAS LISTING /tmp/ccOA65j8.s 			page 1
+
+
+   1              		.file	"MemoryAllocator.cpp"
+   2              		.option pic
+   3              		.option norelax
+   4              		.text
+   5              	.Ltext0:
+   6              		.align	2
+   7              		.globl	_ZN15MemoryAllocator11getInstanceEv
+   9              	_ZN15MemoryAllocator11getInstanceEv:
+  10              	.LFB3:
+  11              		.file 1 "src/MemoryAllocator.cpp"
+   1:src/MemoryAllocator.cpp **** //
+   2:src/MemoryAllocator.cpp **** // Created by os on 8/17/22.
+   3:src/MemoryAllocator.cpp **** //
+   4:src/MemoryAllocator.cpp **** 
+   5:src/MemoryAllocator.cpp **** #include "../h/MemoryAllocator.hpp"
+   6:src/MemoryAllocator.cpp **** 
+   7:src/MemoryAllocator.cpp **** 
+   8:src/MemoryAllocator.cpp **** MemoryAllocator *MemoryAllocator::getInstance() {
+  12              		.loc 1 8 49
+  13              		.cfi_startproc
+  14              	.LVL0:
+  15 0000 130101FF 		addi	sp,sp,-16
+  16              		.cfi_def_cfa_offset 16
+  17 0004 23348100 		sd	s0,8(sp)
+  18              		.cfi_offset 8, -8
+  19 0008 13040101 		addi	s0,sp,16
+  20              		.cfi_def_cfa 8, 0
+   9:src/MemoryAllocator.cpp ****     return this->instance;
+  21              		.loc 1 9 5
+  10:src/MemoryAllocator.cpp **** }
+  22              		.loc 1 10 1 is_stmt 0
+  23 000c 03350500 		ld	a0,0(a0)
+  24              	.LVL1:
+  25 0010 03348100 		ld	s0,8(sp)
+  26              		.cfi_restore 8
+  27              		.cfi_def_cfa 2, 16
+  28 0014 13010101 		addi	sp,sp,16
+  29              		.cfi_def_cfa_offset 0
+  30 0018 67800000 		jr	ra
+  31              		.cfi_endproc
+  32              	.LFE3:
+  34              	.Letext0:
+  35              		.file 2 "src/../h/MemoryAllocator.hpp"
+GAS LISTING /tmp/ccOA65j8.s 			page 2
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 MemoryAllocator.cpp
+     /tmp/ccOA65j8.s:9      .text:0000000000000000 _ZN15MemoryAllocator11getInstanceEv
+     /tmp/ccOA65j8.s:13     .text:0000000000000000 .L0 
+     /tmp/ccOA65j8.s:15     .text:0000000000000000 .L0 
+     /tmp/ccOA65j8.s:16     .text:0000000000000004 .L0 
+     /tmp/ccOA65j8.s:18     .text:0000000000000008 .L0 
+     /tmp/ccOA65j8.s:20     .text:000000000000000c .L0 
+     /tmp/ccOA65j8.s:22     .text:000000000000000c .L0 
+     /tmp/ccOA65j8.s:23     .text:000000000000000c .L0 
+     /tmp/ccOA65j8.s:26     .text:0000000000000014 .L0 
+     /tmp/ccOA65j8.s:27     .text:0000000000000014 .L0 
+     /tmp/ccOA65j8.s:29     .text:0000000000000018 .L0 
+     /tmp/ccOA65j8.s:31     .text:000000000000001c .L0 
+     /tmp/ccOA65j8.s:36     .text:000000000000001c .L0 
+     /tmp/ccOA65j8.s:109    .debug_abbrev:0000000000000000 .Ldebug_abbrev0
+     /tmp/ccOA65j8.s:306    .debug_str:000000000000002e .LASF4
+     /tmp/ccOA65j8.s:308    .debug_str:00000000000000f2 .LASF5
+     /tmp/ccOA65j8.s:302    .debug_str:0000000000000000 .LASF6
+     /tmp/ccOA65j8.s:5      .text:0000000000000000 .Ltext0
+     /tmp/ccOA65j8.s:34     .text:000000000000001c .Letext0
+     /tmp/ccOA65j8.s:300    .debug_line:0000000000000000 .Ldebug_line0
+     /tmp/ccOA65j8.s:304    .debug_str:000000000000001e .LASF0
+     /tmp/ccOA65j8.s:310    .debug_str:000000000000010a .LASF7
+     /tmp/ccOA65j8.s:318    .debug_str:0000000000000148 .LASF2
+     /tmp/ccOA65j8.s:314    .debug_str:0000000000000118 .LASF1
+     /tmp/ccOA65j8.s:316    .debug_str:0000000000000124 .LASF3
+     /tmp/ccOA65j8.s:10     .text:0000000000000000 .LFB3
+     /tmp/ccOA65j8.s:32     .text:000000000000001c .LFE3
+     /tmp/ccOA65j8.s:312    .debug_str:0000000000000113 .LASF8
+     /tmp/ccOA65j8.s:273    .debug_loc:0000000000000000 .LLST0
+     /tmp/ccOA65j8.s:14     .text:0000000000000000 .LVL0
+     /tmp/ccOA65j8.s:24     .text:0000000000000010 .LVL1
+     /tmp/ccOA65j8.s:37     .debug_info:0000000000000000 .Ldebug_info0
+
+NO UNDEFINED SYMBOLS
