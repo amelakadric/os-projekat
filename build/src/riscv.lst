@@ -1,0 +1,149 @@
+GAS LISTING /tmp/ccTVFtQg.s 			page 1
+
+
+   1              		.file	"riscv.cpp"
+   2              		.option pic
+   3              		.option norelax
+   4              		.text
+   5              	.Ltext0:
+   6              		.align	2
+   7              		.globl	_ZN5Riscv10popSppSpieEv
+   9              	_ZN5Riscv10popSppSpieEv:
+  10              	.LFB36:
+  11              		.file 1 "src/riscv.cpp"
+   1:src/riscv.cpp **** //
+   2:src/riscv.cpp **** 
+   3:src/riscv.cpp **** #include "../h/riscv.hpp"
+   4:src/riscv.cpp **** #include "../h/tcb.hpp"
+   5:src/riscv.cpp **** #include "../lib/console.h"
+   6:src/riscv.cpp **** 
+   7:src/riscv.cpp **** void Riscv::popSppSpie()
+   8:src/riscv.cpp **** {
+  12              		.loc 1 8 1
+  13              		.cfi_startproc
+  14 0000 130101FF 		addi	sp,sp,-16
+  15              		.cfi_def_cfa_offset 16
+  16 0004 23348100 		sd	s0,8(sp)
+  17              		.cfi_offset 8, -8
+  18 0008 13040101 		addi	s0,sp,16
+  19              		.cfi_def_cfa 8, 0
+   9:src/riscv.cpp ****     __asm__ volatile ("csrw sepc, ra");
+  20              		.loc 1 9 5
+  21              		.loc 1 9 39 is_stmt 0
+  22              	#APP
+  23              	# 9 "src/riscv.cpp" 1
+  10              	    __asm__ volatile ("sret");
+  24              		csrw sepc, ra
+  25              	# 0 "" 2
+  26              		.loc 1 10 5 is_stmt 1
+  27              		.loc 1 10 30 is_stmt 0
+  28              	# 10 "src/riscv.cpp" 1
+  11              	}
+  29              		sret
+  30              	# 0 "" 2
+  31              		.loc 1 11 1
+  32              	#NO_APP
+  33 0014 03348100 		ld	s0,8(sp)
+  34              		.cfi_restore 8
+  35              		.cfi_def_cfa 2, 16
+  36 0018 13010101 		addi	sp,sp,16
+  37              		.cfi_def_cfa_offset 0
+  38 001c 67800000 		jr	ra
+  39              		.cfi_endproc
+  40              	.LFE36:
+  42              	.Letext0:
+  43              		.file 2 "src/../h/../lib/hw.h"
+  44              		.file 3 "src/../h/riscv.hpp"
+GAS LISTING /tmp/ccTVFtQg.s 			page 2
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 riscv.cpp
+     /tmp/ccTVFtQg.s:9      .text:0000000000000000 _ZN5Riscv10popSppSpieEv
+     /tmp/ccTVFtQg.s:13     .text:0000000000000000 .L0 
+     /tmp/ccTVFtQg.s:14     .text:0000000000000000 .L0 
+     /tmp/ccTVFtQg.s:15     .text:0000000000000004 .L0 
+     /tmp/ccTVFtQg.s:17     .text:0000000000000008 .L0 
+     /tmp/ccTVFtQg.s:19     .text:000000000000000c .L0 
+     /tmp/ccTVFtQg.s:21     .text:000000000000000c .L0 
+       src/riscv.cpp:9      .text:000000000000000c .L0 
+     /tmp/ccTVFtQg.s:27     .text:0000000000000010 .L0 
+       src/riscv.cpp:10     .text:0000000000000010 .L0 
+     /tmp/ccTVFtQg.s:33     .text:0000000000000014 .L0 
+     /tmp/ccTVFtQg.s:34     .text:0000000000000018 .L0 
+     /tmp/ccTVFtQg.s:35     .text:0000000000000018 .L0 
+     /tmp/ccTVFtQg.s:37     .text:000000000000001c .L0 
+     /tmp/ccTVFtQg.s:39     .text:0000000000000020 .L0 
+     /tmp/ccTVFtQg.s:45     .text:0000000000000020 .L0 
+     /tmp/ccTVFtQg.s:372    .debug_abbrev:0000000000000000 .Ldebug_abbrev0
+     /tmp/ccTVFtQg.s:756    .debug_str:000000000000030d .LASF54
+     /tmp/ccTVFtQg.s:730    .debug_str:000000000000023d .LASF55
+     /tmp/ccTVFtQg.s:692    .debug_str:000000000000011b .LASF56
+     /tmp/ccTVFtQg.s:5      .text:0000000000000000 .Ltext0
+     /tmp/ccTVFtQg.s:42     .text:0000000000000020 .Letext0
+     /tmp/ccTVFtQg.s:650    .debug_line:0000000000000000 .Ldebug_line0
+     /tmp/ccTVFtQg.s:720    .debug_str:00000000000001fd .LASF0
+     /tmp/ccTVFtQg.s:726    .debug_str:0000000000000217 .LASF1
+     /tmp/ccTVFtQg.s:714    .debug_str:00000000000001d2 .LASF2
+     /tmp/ccTVFtQg.s:708    .debug_str:00000000000001a8 .LASF4
+     /tmp/ccTVFtQg.s:742    .debug_str:00000000000002a6 .LASF3
+     /tmp/ccTVFtQg.s:666    .debug_str:0000000000000056 .LASF5
+     /tmp/ccTVFtQg.s:728    .debug_str:000000000000022a .LASF6
+     /tmp/ccTVFtQg.s:718    .debug_str:00000000000001ea .LASF7
+     /tmp/ccTVFtQg.s:760    .debug_str:00000000000003e0 .LASF8
+     /tmp/ccTVFtQg.s:700    .debug_str:000000000000015a .LASF9
+     /tmp/ccTVFtQg.s:732    .debug_str:000000000000024b .LASF10
+     /tmp/ccTVFtQg.s:758    .debug_str:00000000000003d1 .LASF11
+     /tmp/ccTVFtQg.s:668    .debug_str:000000000000005d .LASF12
+     /tmp/ccTVFtQg.s:656    .debug_str:0000000000000022 .LASF13
+     /tmp/ccTVFtQg.s:674    .debug_str:000000000000008b .LASF14
+     /tmp/ccTVFtQg.s:738    .debug_str:0000000000000278 .LASF15
+     /tmp/ccTVFtQg.s:676    .debug_str:0000000000000097 .LASF16
+     /tmp/ccTVFtQg.s:724    .debug_str:0000000000000211 .LASF57
+     /tmp/ccTVFtQg.s:736    .debug_str:000000000000026d .LASF17
+     /tmp/ccTVFtQg.s:764    .debug_str:0000000000000403 .LASF19
+     /tmp/ccTVFtQg.s:664    .debug_str:0000000000000048 .LASF18
+     /tmp/ccTVFtQg.s:684    .debug_str:00000000000000df .LASF20
+     /tmp/ccTVFtQg.s:748    .debug_str:00000000000002d4 .LASF21
+     /tmp/ccTVFtQg.s:654    .debug_str:0000000000000008 .LASF22
+     /tmp/ccTVFtQg.s:658    .debug_str:0000000000000032 .LASF23
+     /tmp/ccTVFtQg.s:746    .debug_str:00000000000002bf .LASF25
+     /tmp/ccTVFtQg.s:682    .debug_str:00000000000000d6 .LASF27
+     /tmp/ccTVFtQg.s:680    .debug_str:00000000000000c1 .LASF29
+     /tmp/ccTVFtQg.s:744    .debug_str:00000000000002b8 .LASF24
+     /tmp/ccTVFtQg.s:734    .debug_str:000000000000025a .LASF26
+     /tmp/ccTVFtQg.s:754    .debug_str:0000000000000306 .LASF28
+     /tmp/ccTVFtQg.s:750    .debug_str:00000000000002e1 .LASF30
+GAS LISTING /tmp/ccTVFtQg.s 			page 3
+
+
+     /tmp/ccTVFtQg.s:696    .debug_str:000000000000014c .LASF31
+     /tmp/ccTVFtQg.s:678    .debug_str:00000000000000ad .LASF32
+     /tmp/ccTVFtQg.s:652    .debug_str:0000000000000000 .LASF33
+     /tmp/ccTVFtQg.s:704    .debug_str:000000000000017e .LASF34
+     /tmp/ccTVFtQg.s:686    .debug_str:00000000000000fa .LASF35
+     /tmp/ccTVFtQg.s:670    .debug_str:000000000000006d .LASF36
+     /tmp/ccTVFtQg.s:768    .debug_str:0000000000000426 .LASF37
+     /tmp/ccTVFtQg.s:688    .debug_str:0000000000000102 .LASF38
+     /tmp/ccTVFtQg.s:722    .debug_str:000000000000020a .LASF39
+     /tmp/ccTVFtQg.s:762    .debug_str:00000000000003f0 .LASF40
+     /tmp/ccTVFtQg.s:662    .debug_str:0000000000000041 .LASF41
+     /tmp/ccTVFtQg.s:694    .debug_str:0000000000000139 .LASF42
+     /tmp/ccTVFtQg.s:698    .debug_str:0000000000000154 .LASF43
+     /tmp/ccTVFtQg.s:752    .debug_str:00000000000002f4 .LASF44
+     /tmp/ccTVFtQg.s:660    .debug_str:000000000000003b .LASF45
+     /tmp/ccTVFtQg.s:770    .debug_str:000000000000042e .LASF46
+     /tmp/ccTVFtQg.s:766    .debug_str:000000000000041b .LASF47
+     /tmp/ccTVFtQg.s:740    .debug_str:000000000000028e .LASF48
+     /tmp/ccTVFtQg.s:710    .debug_str:00000000000001af .LASF49
+     /tmp/ccTVFtQg.s:712    .debug_str:00000000000001ba .LASF50
+     /tmp/ccTVFtQg.s:672    .debug_str:0000000000000081 .LASF51
+     /tmp/ccTVFtQg.s:706    .debug_str:0000000000000192 .LASF52
+     /tmp/ccTVFtQg.s:716    .debug_str:00000000000001e0 .LASF58
+     /tmp/ccTVFtQg.s:702    .debug_str:0000000000000168 .LASF59
+     /tmp/ccTVFtQg.s:690    .debug_str:0000000000000116 .LASF53
+     /tmp/ccTVFtQg.s:10     .text:0000000000000000 .LFB36
+     /tmp/ccTVFtQg.s:40     .text:0000000000000020 .LFE36
+     /tmp/ccTVFtQg.s:46     .debug_info:0000000000000000 .Ldebug_info0
+
+NO UNDEFINED SYMBOLS

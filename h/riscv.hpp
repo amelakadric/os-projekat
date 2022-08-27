@@ -2,8 +2,8 @@
 // Created by os on 8/19/22.
 //
 
-#ifndef PROJECT_BASE_RISV_HPP
-#define PROJECT_BASE_RISV_HPP
+#ifndef PROJECT_BASE_RISCV_HPP
+#define PROJECT_BASE_RISCV_HPP
 
 #include "../lib/hw.h"
 
@@ -12,7 +12,7 @@ class Riscv
 public:
 
     // pop sstatus.spp and sstatus.spie bits (has to be a non inline function)
-//    static void popSppSpie();
+    static void popSppSpie();
 
     // push x3..x31 registers onto stack
     static void pushRegisters();
@@ -178,4 +178,4 @@ inline void Riscv::w_sstatus(uint64 sstatus)
     __asm__ volatile ("csrw sstatus, %[sstatus]" : : [sstatus] "r"(sstatus));
 }
 
-#endif //PROJECT_BASE_RISV_HPP
+#endif //PROJECT_BASE_RISCV_HPP

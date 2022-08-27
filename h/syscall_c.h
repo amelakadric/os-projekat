@@ -6,6 +6,8 @@ int mem_free (void*);
 
 class _thread;
 typedef _thread* thread_t;
+typedef thread_t *TCB;
+
 
 int thread_create (
         thread_t* handle,
