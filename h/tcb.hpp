@@ -4,6 +4,9 @@
 #include "../lib/mem.h"
 #include "scheduler.hpp"
 
+typedef TCB* thread_t;
+
+
 class TCB
 {
 public:
@@ -26,9 +29,9 @@ public:
 private:
     TCB(Body body, uint64 timeSlice) :
             body(body),
-            stack(body != nullptr ? new uint64[STACK_SIZE] : nullptr),
+            stack(body != nullptr ? new uint64[DEFAULT_STACK_SIZE] : nullptr),
             context({(uint64) &threadWrapper,
-                     stack != nullptr ? (uint64) &stack[STACK_SIZE] : 0
+                     stack != nullptr ? (uint64) &stack[DEFAULT_STACK_SIZE] : 0
                     }),
             timeSlice(timeSlice),
             finished(false)
@@ -58,8 +61,8 @@ private:
 
     static uint64 timeSliceCounter;
 
-    static uint64 constexpr STACK_SIZE = 1024;
-    static uint64 constexpr TIME_SLICE = 2;
+//    static uint64 constexpr STACK_SIZE = 1024;
+//    static uint64 constexpr TIME_SLICE = 2;
 };
 
 

@@ -11,10 +11,16 @@ void ::operator delete (void*);
 
 class Thread {
 public:
-    Thread (void (*body)(void*), void* arg);
+    Thread (void (*body)(void*), void* arg){
+        thread_create(&myHandle, body, arg);
+    }
     virtual ~Thread ();
-    int start ();
-    static void dispatch ();
+    int start (){
+
+    }
+    static void dispatch (){
+        thread_dispatch();
+    }
     static int sleep (time_t);
 protected:
     Thread ();
@@ -24,27 +30,27 @@ private:
 };
 
 
-class Semaphore {
-public:
-    Semaphore (unsigned init = 1);
-    virtual ~Semaphore ();
-    int wait ();
-    int signal ();
-private:
-    sem_t myHandle;
-};
-
-
-class PeriodicThread : public Thread {
-protected:
-    PeriodicThread (time_t period);
-    virtual void periodicActivation () {}
-};
-
-
-class Console {
-public:
-    static char getc ();
-    static void putc (char);
-};
+//class Semaphore {
+//public:
+//    Semaphore (unsigned init = 1);
+//    virtual ~Semaphore ();
+//    int wait ();
+//    int signal ();
+//private:
+//    sem_t myHandle;
+//};
+//
+//
+//class PeriodicThread : public Thread {
+//protected:
+//    PeriodicThread (time_t period);
+//    virtual void periodicActivation () {}
+//};
+//
+//
+//class Console {
+//public:
+//    static char getc ();
+//    static void putc (char);
+//};
 #endif

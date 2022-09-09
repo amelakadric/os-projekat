@@ -46,9 +46,9 @@ public:
 
     enum BitMaskSip
     {
-        SIP_SSIE = (1 << 1),
-        SIP_STIE = (1 << 5),
-        SIP_SEIE = (1 << 9),
+        SIP_SSIP = (1 << 1),
+        SIP_STIP = (1 << 5),
+        SIP_SEIP = (1 << 9),
     };
 
     // mask set register sip
@@ -82,7 +82,16 @@ public:
     // write register sstatus
     static void w_sstatus(uint64 sstatus);
 
+    //read a0;
+    static uint64 r_a0();
+
+// supervisor trap
+    static void supervisorTrap();
+
 private:
+
+    // supervisor trap handler
+    static void handleSupervisorTrap();
 
 };
 
@@ -176,6 +185,14 @@ inline uint64 Riscv::r_sstatus()
 inline void Riscv::w_sstatus(uint64 sstatus)
 {
     __asm__ volatile ("csrw sstatus, %[sstatus]" : : [sstatus] "r"(sstatus));
+}
+
+
+inline uint64 Riscv::r_a0()
+{
+    uint64 volatile a0;
+    __asm__ volatile ("mv %[a0], a0" : [a0] "=r"(a0));
+    return a0;
 }
 
 #endif //PROJECT_BASE_RISCV_HPP
