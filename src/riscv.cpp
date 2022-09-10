@@ -1,7 +1,7 @@
 //
 
 #include "../h/riscv.hpp"
-#include "../h/tcb.hpp"
+#include "../h/TCB.hpp"
 #include "../lib/console.h"
 
 using Body = void (*)();
@@ -33,18 +33,24 @@ void Riscv::handleSupervisorTrap()
             //mem_free
         }
         else if (a0 == 0x0000000000000011UL){
-            //thread_create(&myhandle a1, body a2, arg a3, stek??)
+            //thread_create(&myhandle-a1, body-a2, arg-a3, stek??)
 
 
             Body a2;
             __asm__ volatile ("mv %[a2], a2" : [a2] "=r"(a2));
 
-            uint64 a3;
+            void* a3;
             __asm__ volatile ("mv %[a3], a3" : [a3] "=r"(a3));
 
-//            TCB a1;
-//            __asm__ volatile ("mv %[a1], a1" : [a1] "=r"(a1));
-//            a1 = TCB( a2, DEFAULT_TIME_SLICE);
+            TCB *a1;
+            __asm__ volatile ("mv %[a1], a1" : [a1] "=r"(a1));
+            a1->body=a2;
+            a1->arg=a3;
+            a1->stack=(a1->body != nullptr ? new uint64[DEFAULT_STACK_SIZE] : nullptr);
+            a1->context.ra=(uint64) &a1->threadWrapper;
+            a1->context.sp=a1->stack != nullptr ? (uint64) &a1->stack[DEFAULT_STACK_SIZE] : 0;
+            a1->timeSlice=DEFAULT_TIME_SLICE;
+            a1->finished=false;
 
         }
         else if (a0 == 0x0000000000000012UL){

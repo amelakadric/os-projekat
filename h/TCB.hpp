@@ -6,10 +6,11 @@
 
 typedef TCB* thread_t;
 
-
 class TCB
 {
 public:
+    using Body = void (*)();
+
     ~TCB() { delete[] stack; }
 
     bool isFinished() const { return finished; }
@@ -18,7 +19,8 @@ public:
 
     uint64 getTimeSlice() const { return timeSlice; }
 
-    using Body = void (*)();
+    Body getBody() { return this->body;}
+
 
     static TCB *createThread(Body body);
 
@@ -27,17 +29,17 @@ public:
     static TCB *running;
 
 private:
-    TCB(Body body, uint64 timeSlice) :
-            body(body),
-            stack(body != nullptr ? new uint64[DEFAULT_STACK_SIZE] : nullptr),
-            context({(uint64) &threadWrapper,
-                     stack != nullptr ? (uint64) &stack[DEFAULT_STACK_SIZE] : 0
-                    }),
-            timeSlice(timeSlice),
-            finished(false)
-    {
-        if (body != nullptr) { Scheduler::put(this); }
-    }
+//    TCB(Body body, uint64 timeSlice) :
+//            body(body),
+//            stack(body != nullptr ? new uint64[DEFAULT_STACK_SIZE] : nullptr),
+//            context({(uint64) &threadWrapper,
+//                     stack != nullptr ? (uint64) &stack[DEFAULT_STACK_SIZE] : 0
+//                    }),
+//            timeSlice(timeSlice),
+//            finished(false)
+//    {
+//        if (body != nullptr) { Scheduler::put(this); }
+//    }
 
     struct Context
     {
@@ -49,6 +51,7 @@ private:
     uint64 *stack;
     Context context;
     uint64 timeSlice;
+    void* arg;
     bool finished;
 
     friend class Riscv;

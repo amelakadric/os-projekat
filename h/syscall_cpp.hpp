@@ -4,9 +4,8 @@
 #include "../lib/mem.h"
 
 
-
-void* ::operator new (size_t);
-void ::operator delete (void*);
+void* operator new (size_t);
+void operator delete (void*);
 
 
 class Thread {
@@ -17,11 +16,13 @@ public:
     virtual ~Thread ();
     int start (){
 
+        if (myHandle->getBody()!= nullptr) { Scheduler::put(myHandle); return 0;}
+        return 1;
     }
     static void dispatch (){
         thread_dispatch();
     }
-    static int sleep (time_t);
+    static int sleep (time_t){ return 0;}
 protected:
     Thread ();
     virtual void run () {}
