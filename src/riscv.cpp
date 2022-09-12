@@ -3,6 +3,7 @@
 #include "../h/riscv.hpp"
 #include "../h/TCB.hpp"
 #include "../lib/console.h"
+#include "../h/MemoryAllocator.hpp"
 
 using Body = void (*)();
 
@@ -27,10 +28,26 @@ void Riscv::handleSupervisorTrap()
 
         uint64 a0 = r_a0();
         if (a0 == 0x0000000000000001UL){
-            //mem_alloc
+            //mem_alloc(size_t size-a1)
+            size_t a1;
+            void *a;
+            __asm__ volatile ("mv %[a1], a1" : [a1] "=r"(a1));
+
+            MemoryAllocator* memAlloc= MemoryAllocator::getInstance();
+            a=memAlloc->malloc(a1);
+            __asm__ volatile("mv a0, %0"::"r"(a));
         }
         else if (a0 == 0x0000000000000002UL){
             //mem_free
+            void* a1;
+            int a;
+            __asm__ volatile ("mv %[a1], a1" : [a1] "=r"(a1));
+
+            MemoryAllocator* memAlloc= MemoryAllocator::getInstance();
+            a=memAlloc->free(a1);
+            __asm__ volatile("mv a0, %0"::"r"(a));
+
+
         }
         else if (a0 == 0x0000000000000011UL){
             //thread_create(&myhandle-a1, body-a2, arg-a3, stek??)

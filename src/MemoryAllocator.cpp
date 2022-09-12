@@ -8,7 +8,10 @@ MemoryAllocator::BlockHeader* MemoryAllocator::top= nullptr;
 MemoryAllocator::BlockHeader* MemoryAllocator::heapStart = nullptr;
 
 MemoryAllocator *MemoryAllocator::getInstance() {
-    return this->instance;
+    if (instance == nullptr){
+        instance = new MemoryAllocator();
+    }
+    return instance;
 }
 
 

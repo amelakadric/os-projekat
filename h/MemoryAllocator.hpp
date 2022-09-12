@@ -8,7 +8,7 @@
 class MemoryAllocator {
 private:
 
-    MemoryAllocator *instance;
+    static MemoryAllocator *instance;
 
     struct BlockHeader {
         BlockHeader *next= nullptr;
@@ -70,7 +70,7 @@ private:
 
 
 public:
-    MemoryAllocator* getInstance();
+    static MemoryAllocator* getInstance();
 
     void *malloc(size_t size){
         size= align(size);
