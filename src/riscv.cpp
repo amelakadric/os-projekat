@@ -53,8 +53,7 @@ void Riscv::handleSupervisorTrap()
             a1->finished=false;
 
         }
-        else if (a0 == 0x0000000000000012UL){
-            //thread_exit
+        else if (a0 == 0x0000000000000012UL){          //thread_exit
 
         }
         else if (a0 == 0x0000000000000013UL){

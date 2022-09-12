@@ -22,7 +22,7 @@ public:
     Body getBody() { return this->body;}
 
 
-    static TCB *createThread(Body body);
+    static TCB *createThread(Body body, void* arg);
 
     static void yield();
 
