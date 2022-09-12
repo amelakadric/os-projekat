@@ -1,33 +1,31 @@
 #include "../h/MemoryAllocator.hpp"
 
 
-void* MemoryAllocator::freeMemHead = const_cast<void *>(HEAP_START_ADDR);
+char* MemoryAllocator::freeMemHead = (char *)HEAP_START_ADDR;
 
 MemoryAllocator::BlockHeader* MemoryAllocator::top= nullptr;
 
 MemoryAllocator::BlockHeader* MemoryAllocator::heapStart = nullptr;
 
 MemoryAllocator *MemoryAllocator::getInstance() {
-    if (instance == nullptr){
-        instance = new MemoryAllocator();
+    if (MemoryAllocator::instance == nullptr){
+        MemoryAllocator::instance = new MemoryAllocator();
     }
-    return instance;
+    return MemoryAllocator::instance;
 }
-
 
 MemoryAllocator::BlockHeader* MemoryAllocator::allocInHeap(size_t size) {
     size= allocSize(size);
-    if((&freeMemHead+size)>(&HEAP_END_ADDR-1)){
+    if((freeMemHead+size)>((char*)HEAP_END_ADDR-1)){
         return nullptr;
     }
     BlockHeader* blockStart=(BlockHeader*)freeMemHead;
 
-//        freeMemHead+=size;
+        freeMemHead+=size;
 
     return blockStart;
 
 }
-
 
 MemoryAllocator::BlockHeader* MemoryAllocator::firstfit(size_t size){
     BlockHeader* block =(BlockHeader*)freeMemHead;
@@ -44,11 +42,10 @@ MemoryAllocator::BlockHeader* MemoryAllocator::firstfit(size_t size){
 
 
 MemoryAllocator::BlockHeader* MemoryAllocator::findBlock(BlockHeader* p){
-    BlockHeader *block, *prev;
+    BlockHeader *block;
 
-    for(block=heapStart; block!= nullptr; prev=block, block=block->next){
+    for(block=heapStart; block!= nullptr; block=block->next){
         if(block==p){
-            prev->next= nullptr;
             return block;
         }
     }
@@ -74,7 +71,6 @@ void* MemoryAllocator::malloc(size_t size){
         top->next=block;
     }
     top=block;
-
     return block;
 }
 

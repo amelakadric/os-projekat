@@ -1,19 +1,8 @@
-#include "../lib/console.h"
-//#include "../h/syscall_cpp.hpp"
-#include "../h/MemoryAllocator.hpp"
+#include "../h/syscall_c.h"
 
+int main(){
 
-void main(){
-
-//    __putc('O');
-//    __putc('S');
-//    __putc('1');
-//    __putc('\n');
-//    __putc('\n');
-//
-//    while(1){
-//        char character = __getc();
-//        __putc(character + 30);
-//    }
-
+    int* a=new int[2];
+    a[0]=1;
+    return 0;
 }

@@ -15,7 +15,7 @@ private:
         size_t size;
         bool free;
     };
-    static void *freeMemHead;
+    static char *freeMemHead;
     static BlockHeader *top;
     static BlockHeader *heapStart;
 
