@@ -13,11 +13,11 @@ private:
     struct BlockHeader {
         BlockHeader *next= nullptr;
         size_t size;
-        bool free;
+        bool free=true;
     };
-    static char *freeMemHead;
+    static char *heapStart;
     static BlockHeader *top;
-    static BlockHeader *heapStart;
+    static BlockHeader *blockHead;
 
     inline size_t align(size_t n) {
         return (n + MEM_BLOCK_SIZE - 1) & ~(MEM_BLOCK_SIZE - 1);

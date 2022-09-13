@@ -29,7 +29,7 @@ protected:
     Thread ();
     virtual void run ();
 private:
-//    thread_t* myHandle;
+    thread_t* myHandle;
 };
 
 

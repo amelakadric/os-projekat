@@ -1,0 +1,216 @@
+MemoryAllocator/mem_alloc/new/delete: (samo menjajte sta se poziva)
+
+------------------------------------------------------------------------------------------
+#include "../lib/hw.h"
+#include "../lib/console.h"
+#include "../h/MemoryAllocator.h"
+
+int main() {
+
+    int n = 10;
+    char* niz = (char*)MemoryAllocator::mem_alloc(1);
+    if(niz == nullptr) {
+        __putc('?');
+    }
+
+    for(int i = 0; i < n; i++) {
+        niz[i] = 'k';
+    }
+
+    for(int i = 0; i < n; i++) {
+        __putc(niz[i]);
+        __putc(' ');
+    }
+
+    int status = MemoryAllocator::mem_free(niz);
+    if(status != 0) {
+        __putc('?');
+    }
+
+
+}
+
+Ispis: k k k k k k k k k k (bez ?)
+------------------------------------------------------------------------------------------
+#include "../lib/hw.h"
+#include "../lib/console.h"
+#include "../h/MemoryAllocator.h"
+
+void main() {
+	int velicinaZaglavlja = 2*sizeof(size_t); // meni je ovoliko
+	
+    char* niz = (char*)MemoryAllocator::mem_alloc(((size_t)HEAP_END_ADDR - (size_t)HEAP_START_ADDR - velicinaZaglavlja)/MEM_BLOCK_SIZE); // celokupan prostor
+    if(niz == nullptr) {
+        __putc('?');
+    }
+
+    //int n = 10;
+    char* niz2 = (char*)MemoryAllocator::mem_alloc(1);
+    if(niz2 == nullptr) {
+        __putc('k');
+    }
+
+    int status = MemoryAllocator::mem_free(niz);
+    if(status) {
+        __putc('?');
+    }
+    niz2 = (char*)MemoryAllocator::mem_alloc(1);
+    if(niz2 == nullptr) {
+        __putc('?');
+    }
+
+}
+
+Ispis: k
+------------------------------------------------------------------------------------------
+#include "../lib/hw.h"
+#include "../lib/console.h"
+#include "../h/MemoryAllocator.h"
+
+void main() {
+
+    char *p = nullptr;
+    int status = MemoryAllocator::mem_free(p);
+    if(status) {
+        __putc('k');
+    }
+
+}
+
+Ispis: k (moze da bude bilo sta jer je nedefinisano ponasanje)
+------------------------------------------------------------------------------------------
+#include "../lib/hw.h"
+#include "../lib/console.h"
+#include "../h/MemoryAllocator.h"
+
+void checkNullptr(void* p) {
+    static int x = 0;
+    if(p == nullptr) {
+        __putc('?');
+        __putc('0' + x);
+    }
+    x++;
+}
+
+void checkStatus(int status) {
+    static int y = 0;
+    if(status) {
+        __putc('0' + y);
+        __putc('?');
+    }
+    y++;
+}
+
+void main() {
+    int velicinaZaglavlja = 2 * sizeof(size_t); // meni je ovoliko
+    
+    int *p1 = (int*)MemoryAllocator::mem_alloc(1); // trebalo bi da predje jedan blok od 64
+    checkNullptr(p1);
+    int *p2 = (int*)MemoryAllocator::mem_alloc(2);
+    checkNullptr(p2);
+
+    int *p3 = (int*)MemoryAllocator::mem_alloc(2);
+    checkNullptr(p3);
+
+    checkStatus(MemoryAllocator::mem_free(p1));
+    checkStatus(MemoryAllocator::mem_free(p3));
+    checkStatus(MemoryAllocator::mem_free(p2)); // p2 treba da se spoji sa p1 i p3
+
+    int *celaMemorija = (int*)MemoryAllocator::mem_alloc(((size_t)HEAP_END_ADDR - (size_t)HEAP_START_ADDR - velicinaZaglavlja)/MEM_BLOCK_SIZE);
+    checkNullptr(celaMemorija);
+
+    checkStatus(MemoryAllocator::mem_free(celaMemorija));
+}
+
+Ispis: (nista ako nema greske)
+------------------------------------------------------------------------------------------
+#include "../lib/hw.h"
+#include "../lib/console.h"
+#include "../h/MemoryAllocator.h"
+
+void checkNullptr(void* p) {
+    static int x = 0;
+    if(p == nullptr) {
+        __putc('?');
+        __putc('0' + x);
+    }
+    x++;
+}
+
+void checkStatus(int status) {
+    static int y = 0;
+    if(status) {
+        __putc('0' + y);
+        __putc('?');
+    }
+    y++;
+}
+
+int main() {
+    int n = 16;
+
+    char** matrix = (char**)MemoryAllocator::mem_alloc(2);
+    checkNullptr(matrix);
+    for(int i = 0; i < n; i++) {
+        matrix[i] = (char *) MemoryAllocator::mem_alloc(1);
+        checkNullptr(matrix[i]);
+    }
+
+    for(int i = 0; i < n; i++) {
+        for(int j = 0; j < n; j++) {
+            matrix[i][j] = 'k';
+        }
+    }
+
+    for(int i = 0; i < n; i++) {
+        for(int j = 0; j < n; j++) {
+            __putc(matrix[i][j]);
+            __putc(' ');
+        }
+        __putc('\n');
+    }
+
+
+    for(int i = 0; i < n; i++) {
+        int status = MemoryAllocator::mem_free(matrix[i]);
+        checkStatus(status);
+    }
+    int status = MemoryAllocator::mem_free(matrix);
+    checkStatus(status);
+
+}
+
+// matrica 16x16 popunjena sa 'k'
+------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------
+void main() {
+ printInteger((uint64) HEAP_START_ADDR);
+    __putc('\n');
+    printInteger((uint64) HEAP_END_ADDR);
+    __putc('\n');
+
+    void* allocated1 = MemoryAllocator::mem_alloc(3);
+    printInteger((uint64)allocated1);
+    __putc('\n');
+    void* allocated2 = MemoryAllocator::mem_alloc(1);
+    printInteger((uint64)allocated2);
+    __putc('\n');
+    void* allocated3 = MemoryAllocator::mem_alloc(2);
+    printInteger((uint64)allocated3);
+    __putc('\n');
+    void* allocated4 = MemoryAllocator::mem_alloc(1);
+    printInteger((uint64)allocated4);
+
+    __putc('\n');
+    MemoryAllocator::mem_free(allocated2);
+    __putc('\n');
+    MemoryAllocator::mem_free(allocated4);
+    __putc('\n');
+    MemoryAllocator::mem_free(allocated3);
+    __putc('\n');
+    void* allocated5 = MemoryAllocator::mem_alloc(1);
+    printInteger((uint64)allocated5);
+
+    userMain();
+}
