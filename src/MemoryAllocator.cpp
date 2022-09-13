@@ -18,11 +18,14 @@ MemoryAllocator *MemoryAllocator::getInstance() {
 }
 
 MemoryAllocator::BlockHeader* MemoryAllocator::allocInHeap(size_t size) {
-    size= allocSize(size);
-    if((heapStart + size) > ((char*)HEAP_END_ADDR - 1)){
+    size_t sizeB= allocSize(size);
+    if((heapStart + sizeB) > ((char*)HEAP_END_ADDR - 1)){
         return nullptr;
     }
     BlockHeader* blockStart=(BlockHeader*)heapStart;
+    blockStart->free=false;
+    blockStart->size=size;
+
 
     heapStart+=size;
 
@@ -38,6 +41,7 @@ MemoryAllocator::BlockHeader* MemoryAllocator::firstfit(size_t size){
             block=block->next;
             continue;
         }
+        block->free= false;
         return block;
     }
     return nullptr;
@@ -64,8 +68,8 @@ void* MemoryAllocator::malloc(size_t size){
         return block;
     }
     BlockHeader* block = allocInHeap(size);
-    block->size=size;
-    block->free= false;
+//    block->size=size;
+//    block->free= false;
 
     if(blockHead == nullptr){
         blockHead = block;
@@ -85,5 +89,7 @@ int MemoryAllocator::free(void* p){
     }
     return 1;
 }
+
+
 
 

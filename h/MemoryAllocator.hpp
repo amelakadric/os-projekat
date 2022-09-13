@@ -36,6 +36,8 @@ private:
 
     BlockHeader* findBlock(BlockHeader* p);
 
+    void setBlock(size_t size, bool f);
+
 
 
 public:

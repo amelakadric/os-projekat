@@ -5,7 +5,6 @@
 int main() {
 
     int n = 10;
-    __putc('?');
     char* niz = (char*)MemoryAllocator::getInstance()->malloc(1);
     if(niz == nullptr) {
         __putc('?');
