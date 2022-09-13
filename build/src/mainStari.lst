@@ -1,0 +1,106 @@
+GAS LISTING /tmp/ccUASweE.s 			page 1
+
+
+   1              		.file	"mainStari.cpp"
+   2              		.option pic
+   3              		.option norelax
+   4              		.text
+   5              	.Ltext0:
+   6              		.align	2
+   7              		.globl	_Z9mainStariv
+   9              	_Z9mainStariv:
+  10              	.LFB2:
+  11              		.file 1 "src/mainStari.cpp"
+   1:src/mainStari.cpp **** //#include "../lib/console.h"
+   2:src/mainStari.cpp **** //#include "../h/syscall_cpp.hpp"
+   3:src/mainStari.cpp **** #include "../h/MemoryAllocator.hpp"
+   4:src/mainStari.cpp **** 
+   5:src/mainStari.cpp **** 
+   6:src/mainStari.cpp **** int mainStari(){
+  12              		.loc 1 6 16
+  13              		.cfi_startproc
+  14 0000 130101FF 		addi	sp,sp,-16
+  15              		.cfi_def_cfa_offset 16
+  16 0004 23348100 		sd	s0,8(sp)
+  17              		.cfi_offset 8, -8
+  18 0008 13040101 		addi	s0,sp,16
+  19              		.cfi_def_cfa 8, 0
+   7:src/mainStari.cpp **** //
+   8:src/mainStari.cpp **** //    __putc('O');
+   9:src/mainStari.cpp **** //    __putc('S');
+  10:src/mainStari.cpp **** //    __putc('1');
+  11:src/mainStari.cpp **** //    __putc('\n');
+  12:src/mainStari.cpp **** //    __putc('\n');
+  13:src/mainStari.cpp **** //
+  14:src/mainStari.cpp **** //    while(1){
+  15:src/mainStari.cpp **** //        char character = __getc();
+  16:src/mainStari.cpp **** //        __putc(character + 30);
+  17:src/mainStari.cpp **** //    }
+  18:src/mainStari.cpp **** //    MemoryAllocator* mem = MemoryAllocator::getInstance();
+  19:src/mainStari.cpp **** 
+  20:src/mainStari.cpp ****     return 0;
+  20              		.loc 1 20 5
+  21:src/mainStari.cpp **** }...
+  21              		.loc 1 21 1 is_stmt 0
+  22 000c 13050000 		li	a0,0
+  23 0010 03348100 		ld	s0,8(sp)
+  24              		.cfi_restore 8
+  25              		.cfi_def_cfa 2, 16
+  26 0014 13010101 		addi	sp,sp,16
+  27              		.cfi_def_cfa_offset 0
+  28 0018 67800000 		jr	ra
+  29              		.cfi_endproc
+  30              	.LFE2:
+  32              	.Letext0:
+  33              		.file 2 "src/../h/../lib/hw.h"
+GAS LISTING /tmp/ccUASweE.s 			page 2
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 mainStari.cpp
+     /tmp/ccUASweE.s:9      .text:0000000000000000 _Z9mainStariv
+     /tmp/ccUASweE.s:13     .text:0000000000000000 .L0 
+     /tmp/ccUASweE.s:14     .text:0000000000000000 .L0 
+     /tmp/ccUASweE.s:15     .text:0000000000000004 .L0 
+     /tmp/ccUASweE.s:17     .text:0000000000000008 .L0 
+     /tmp/ccUASweE.s:19     .text:000000000000000c .L0 
+     /tmp/ccUASweE.s:21     .text:000000000000000c .L0 
+     /tmp/ccUASweE.s:22     .text:000000000000000c .L0 
+     /tmp/ccUASweE.s:24     .text:0000000000000014 .L0 
+     /tmp/ccUASweE.s:25     .text:0000000000000014 .L0 
+     /tmp/ccUASweE.s:27     .text:0000000000000018 .L0 
+     /tmp/ccUASweE.s:29     .text:000000000000001c .L0 
+     /tmp/ccUASweE.s:34     .text:000000000000001c .L0 
+     /tmp/ccUASweE.s:181    .debug_abbrev:0000000000000000 .Ldebug_abbrev0
+     /tmp/ccUASweE.s:381    .debug_str:00000000000000bd .LASF19
+     /tmp/ccUASweE.s:379    .debug_str:00000000000000ab .LASF20
+     /tmp/ccUASweE.s:395    .debug_str:00000000000001d7 .LASF21
+     /tmp/ccUASweE.s:5      .text:0000000000000000 .Ltext0
+     /tmp/ccUASweE.s:32     .text:000000000000001c .Letext0
+     /tmp/ccUASweE.s:353    .debug_line:0000000000000000 .Ldebug_line0
+     /tmp/ccUASweE.s:385    .debug_str:000000000000018f .LASF0
+     /tmp/ccUASweE.s:377    .debug_str:0000000000000098 .LASF1
+     /tmp/ccUASweE.s:371    .debug_str:000000000000006c .LASF2
+     /tmp/ccUASweE.s:361    .debug_str:0000000000000028 .LASF4
+     /tmp/ccUASweE.s:375    .debug_str:0000000000000086 .LASF3
+     /tmp/ccUASweE.s:357    .debug_str:0000000000000013 .LASF5
+     /tmp/ccUASweE.s:355    .debug_str:0000000000000000 .LASF6
+     /tmp/ccUASweE.s:367    .debug_str:000000000000004a .LASF7
+     /tmp/ccUASweE.s:391    .debug_str:00000000000001b1 .LASF8
+     /tmp/ccUASweE.s:359    .debug_str:000000000000001a .LASF9
+     /tmp/ccUASweE.s:401    .debug_str:000000000000020f .LASF10
+     /tmp/ccUASweE.s:369    .debug_str:000000000000005d .LASF11
+     /tmp/ccUASweE.s:397    .debug_str:00000000000001f5 .LASF12
+     /tmp/ccUASweE.s:389    .debug_str:00000000000001a1 .LASF13
+     /tmp/ccUASweE.s:373    .debug_str:000000000000007a .LASF14
+     /tmp/ccUASweE.s:365    .debug_str:0000000000000034 .LASF15
+     /tmp/ccUASweE.s:393    .debug_str:00000000000001c1 .LASF16
+     /tmp/ccUASweE.s:363    .debug_str:000000000000002f .LASF17
+     /tmp/ccUASweE.s:387    .debug_str:000000000000019c .LASF18
+     /tmp/ccUASweE.s:399    .debug_str:0000000000000205 .LASF22
+     /tmp/ccUASweE.s:383    .debug_str:0000000000000181 .LASF23
+     /tmp/ccUASweE.s:10     .text:0000000000000000 .LFB2
+     /tmp/ccUASweE.s:30     .text:000000000000001c .LFE2
+     /tmp/ccUASweE.s:35     .debug_info:0000000000000000 .Ldebug_info0
+
+NO UNDEFINED SYMBOLS

@@ -1,4 +1,4 @@
-#include "../lib/mem.h"
+//#include "../lib/mem.h"
 #include "TCB.hpp"
 
 void* mem_alloc(size_t size){
@@ -10,8 +10,8 @@ void* mem_alloc(size_t size){
     return a0;
 }
 
-int mem_free (void*){
-    //ovaj argument??
+int mem_free (void* r){
+    __asm__ volatile("mv a2, %0"::"r"(r));
     __asm__ volatile("li a0, 0x02");
     __asm__ volatile("ecall");
 
@@ -20,14 +20,10 @@ int mem_free (void*){
     return a0;
 }
 
-int thread_create (
-        thread_t* handle,
-        void(*start_routine)(void*),
-        void* arg
-){
-    __asm__ volatile("mv a3, %0"::"r"(arg));
-    __asm__ volatile("mv a2, %0"::"r"(start_routine));
-    __asm__ volatile("mv a1, %0"::"r"(handle));
+int thread_create (thread_t* handle, void(*start_routine)(void*), void* arg){
+    __asm__ volatile("mv a5, %0"::"r"(arg));
+    __asm__ volatile("mv a4, %0"::"r"(start_routine));
+    __asm__ volatile("mv a3, %0"::"r"(handle));
     __asm__ volatile("li a0, 0x11");
     __asm__ volatile("ecall");
     uint64 a0;

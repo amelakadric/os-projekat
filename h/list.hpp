@@ -4,7 +4,10 @@
 
 #ifndef PROJECT_BASE_LIST_HPP
 #define PROJECT_BASE_LIST_HPP
+//#include "syscall_cpp.hpp"
 
+#include "../lib/hw.h"
+#include "MemoryAllocator.hpp"
 template<typename T>
 class List
 {
@@ -14,10 +17,53 @@ private:
         T *data;
         Elem *next;
 
+        void* operator new(size_t size){
+            MemoryAllocator* mem=MemoryAllocator::getInstance();
+            return mem->malloc(size);
+        }
+        void* operator new[](size_t size){
+            MemoryAllocator* mem=MemoryAllocator::getInstance();
+            return mem->malloc(size);
+        }
+
+        void operator delete(void *p)
+        {
+            MemoryAllocator* mem=MemoryAllocator::getInstance();
+            mem->free(p);
+        }
+
+        void operator delete[](void *p)
+        {
+            MemoryAllocator* mem=MemoryAllocator::getInstance();
+            mem->free(p);
+        }
+
         Elem(T *data, Elem *next) : data(data), next(next) {}
+
     };
 
     Elem *head, *tail;
+
+    void* operator new(size_t size){
+        MemoryAllocator* mem=MemoryAllocator::getInstance();
+        return mem->malloc(size);
+    }
+    void* operator new[](size_t size){
+        MemoryAllocator* mem=MemoryAllocator::getInstance();
+        return mem->malloc(size);
+    }
+
+    void operator delete(void *p)
+    {
+        MemoryAllocator* mem=MemoryAllocator::getInstance();
+        mem->free(p);
+    }
+
+    void operator delete[](void *p)
+    {
+        MemoryAllocator* mem=MemoryAllocator::getInstance();
+        mem->free(p);
+    }
 
 public:
     List() : head(0), tail(0) {}

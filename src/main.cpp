@@ -1,4 +1,4 @@
-#include "../h/syscall_c.h"
+#include "../h/syscall_cpp.hpp"
 
 int main(){
 

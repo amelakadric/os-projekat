@@ -7,9 +7,12 @@ MemoryAllocator::BlockHeader* MemoryAllocator::top= nullptr;
 
 MemoryAllocator::BlockHeader* MemoryAllocator::heapStart = nullptr;
 
+MemoryAllocator* MemoryAllocator::instance= nullptr;
+
 MemoryAllocator *MemoryAllocator::getInstance() {
     if (MemoryAllocator::instance == nullptr){
-        MemoryAllocator::instance = new MemoryAllocator();
+        instance = (MemoryAllocator*)HEAP_START_ADDR;
+        freeMemHead=freeMemHead+sizeof(MemoryAllocator);
     }
     return MemoryAllocator::instance;
 }

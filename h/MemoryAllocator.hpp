@@ -2,7 +2,7 @@
 #ifndef PROJECT_BASE_MEMORYALLOCATOR_HPP
 #define PROJECT_BASE_MEMORYALLOCATOR_HPP
 
-#include "../lib/mem.h"
+#include "../lib/hw.h"
 
 
 class MemoryAllocator {

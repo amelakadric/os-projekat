@@ -1,13 +1,34 @@
 #ifndef PROJECT_BASE_TCB_HPP
 #define PROJECT_BASE_TCB_HPP
 
-#include "../lib/mem.h"
+#include "../lib/hw.h"
 #include "scheduler.hpp"
 
 typedef TCB* thread_t;
 
 class TCB
 {
+private:
+    void* operator new(size_t size){
+        MemoryAllocator* mem=MemoryAllocator::getInstance();
+        return mem->malloc(size);
+    }
+    void* operator new[](size_t size){
+        MemoryAllocator* mem=MemoryAllocator::getInstance();
+        return mem->malloc(size);
+    }
+
+    void operator delete(void *p)
+    {
+        MemoryAllocator* mem=MemoryAllocator::getInstance();
+        mem->free(p);
+    }
+
+    void operator delete[](void *p)
+    {
+        MemoryAllocator* mem=MemoryAllocator::getInstance();
+        mem->free(p);
+    }
 public:
     using Body = void (*)();
 
@@ -55,6 +76,7 @@ private:
     bool finished;
 
     friend class Riscv;
+
 
     static void threadWrapper();
 

@@ -1,33 +1,35 @@
 #ifndef _syscall_cpp
 #define _syscall_cpp
 #include "syscall_c.h"
-#include "../lib/mem.h"
+//#include "../lib/mem.h"
+#include "riscv.hpp"
 
 
-void* operator new (size_t);
-void operator delete (void*);
+void* operator new (size_t n);
+void operator delete (void* p);
 
 
 class Thread {
 public:
-    Thread (void (*body)(void*), void* arg){
-        thread_create(&myHandle, body, arg);
-    }
-    virtual ~Thread ();
-    int start (){
+    Thread (void (*body)(void*), void* arg);
+//        thread_create(&myHandle, body, arg);
 
-        if (myHandle->getBody()!= nullptr) { Scheduler::put(myHandle); return 0;}
-        return 1;
-    }
-    static void dispatch (){
-        thread_dispatch();
-    }
-    static int sleep (time_t){ return 0;}
+    virtual ~Thread ();
+    int start ();
+
+//        if (myHandle->getBody()!= nullptr) { Scheduler::put(myHandle); return 0;}
+//        return 1;
+//    }
+    static void dispatch ();
+//        thread_dispatch();
+//    }
+    static int sleep (time_t);
+//        return 0;}
 protected:
     Thread ();
-    virtual void run () {}
+    virtual void run ();
 private:
-    thread_t myHandle;
+//    thread_t* myHandle;
 };
 
 
@@ -54,4 +56,25 @@ private:
 //    static char getc ();
 //    static void putc (char);
 //};
+
+void *operator new(size_t n)
+{
+    return mem_alloc(n);
+}
+
+void *operator new[](size_t n)
+{
+    return mem_alloc(n);
+}
+
+void operator delete(void *p)
+{
+mem_free(p);
+}
+
+void operator delete[](void *p)
+{
+mem_free(p);
+}
+
 #endif

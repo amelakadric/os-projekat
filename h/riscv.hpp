@@ -6,7 +6,12 @@
 #define PROJECT_BASE_RISCV_HPP
 
 #include "../lib/hw.h"
+#include "../h/TCB.hpp"
+#include "../lib/console.h"
+//#include "../h/MemoryAllocator.hpp"
+//#include "../h/syscall_cpp.hpp"
 
+//class TCB;
 class Riscv
 {
 public:
