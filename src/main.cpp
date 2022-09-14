@@ -8,8 +8,10 @@ void userMain();
 
 int main() {
 
+    TCB::running= TCB::createThread(nullptr, nullptr);
+
     Riscv::w_stvec((uint64) &Riscv::supervisorTrap);
-//    Riscv::ms_sstatus(Riscv::SSTATUS_SIE);
+    Riscv::ms_sstatus(Riscv::SSTATUS_SIE);
 
 
     userMain();

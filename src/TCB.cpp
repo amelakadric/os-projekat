@@ -32,12 +32,18 @@ void TCB::yield()
 
 void TCB::dispatch()
 {
+//    TCB *old = running;
+//    if(old!= nullptr) {
+//        if (!old->isFinished()) { Scheduler::put(old); }
+//    }
+//    running = Scheduler::get();
+//    if(old== nullptr){
+//        old=running;
+//        return;
+//    }
     TCB *old = running;
-    if(old!= nullptr) {
-        if (!old->isFinished()) { Scheduler::put(old); }
-    }
+    if (!old->isFinished()) { Scheduler::put(old); }
     running = Scheduler::get();
-    if(old== nullptr)old=running;
 
     TCB::contextSwitch(&old->context, &running->context);
 }
