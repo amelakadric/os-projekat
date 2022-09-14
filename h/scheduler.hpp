@@ -14,7 +14,7 @@ class semaphoreK;
 class Scheduler {
 private:
     static List<TCB> readyThreadQueue;
-    Scheduler* instance = (Scheduler*)__mem_alloc(sizeof (Scheduler));
+    Scheduler* instance = new Scheduler;
     Scheduler(){}
 
 

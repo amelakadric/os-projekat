@@ -6,6 +6,7 @@
 #define PROJECT_BASE_LIST_HPP
 
 #include "../lib/mem.h"
+
 template<typename T>
 class List
 {
@@ -14,8 +15,6 @@ private:
     {
         T *data;
         Elem *next;
-
-
 
         Elem(T *data, Elem *next) : data(data), next(next) {}
     };
@@ -29,42 +28,16 @@ public:
 
     List<T> &operator=(const List<T> &) = delete;
 
-//    void *operator new(size_t n)
-//    {
-//        return __mem_alloc(n);
-//    }
-//
-//    void *operator new[](size_t n)
-//    {
-//        return __mem_alloc(n);
-//    }
-//
-//    void operator delete(void *p)
-//    {
-//        __mem_free(p);
-//    }
-//
-//    void operator delete[](void *p)
-//    {
-//        __mem_free(p);
-//    }
-
-
-
     void addFirst(T *data)
     {
-        Elem *elem = (Elem*)__mem_alloc(sizeof(Elem));
-        elem->data=data;
-        elem->next= head;
+        Elem *elem = new Elem(data, head);
         head = elem;
         if (!tail) { tail = head; }
     }
 
     void addLast(T *data)
     {
-        Elem *elem = (Elem*)__mem_alloc(sizeof(Elem));
-        elem->data=data;
-        elem->next= nullptr;
+        Elem *elem = new Elem(data, 0);
         if (tail)
         {
             tail->next = elem;
@@ -84,7 +57,7 @@ public:
         if (!head) { tail = 0; }
 
         T *ret = elem->data;
-        __mem_free(elem);
+        delete elem;
         return ret;
     }
 
@@ -110,7 +83,7 @@ public:
         tail = prev;
 
         T *ret = elem->data;
-        __mem_free(elem);
+        delete elem;
         return ret;
     }
 
@@ -120,6 +93,5 @@ public:
         return tail->data;
     }
 };
-
 
 #endif //PROJECT_BASE_LIST_HPP

@@ -61,14 +61,9 @@ void Riscv::handleSupervisorTrap()
             __asm__ volatile ("mv %[a3], a3" : [a3] "=r"(a3));
 
 //            TCB *a1;
-
 //            a1=TCB::createThread(a2, a3);
-//
 //            uint64 a= (a1!= nullptr)?0: -1;
-
 //            __asm__ volatile("mv a0, %0"::"r"(a));
-
-
 
 //            TCB* tcb = (TCB*)__mem_alloc(sizeof (TCB));
 //            __asm__ volatile ("mv %[a1], a1" : [a1] "=r"(tcb));
