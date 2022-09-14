@@ -8,16 +8,16 @@ uint64 TCB::timeSliceCounter = 0;
 
 TCB *TCB::createThread(Body body, void* arg)
 {
-    TCB* tcb = (TCB*)__mem_alloc(sizeof (TCB));
-    tcb->body=body;
-    tcb->arg=arg;
-    tcb->stack= (body!=nullptr? (uint64*) __mem_alloc(DEFAULT_STACK_SIZE) : nullptr);
-    tcb->context={(uint64) &threadWrapper,
-                     tcb->stack != nullptr ? (uint64) &tcb->stack[DEFAULT_STACK_SIZE] : 0
-                    };
-    tcb->timeSlice=DEFAULT_TIME_SLICE;
-    tcb->finished=false;
-    return tcb;
+//    TCB* tcb = (TCB*)__mem_alloc(sizeof (TCB));
+//    tcb->body=body;
+//    tcb->arg=arg;
+//    tcb->stack= (body!=nullptr? (uint64*) __mem_alloc(DEFAULT_STACK_SIZE) : nullptr);
+//    tcb->context={(uint64) &threadWrapper,
+//                     tcb->stack != nullptr ? (uint64) &tcb->stack[DEFAULT_STACK_SIZE] : 0
+//                    };
+//    tcb->timeSlice=DEFAULT_TIME_SLICE;
+//    tcb->finished=false;
+    return new TCB(body, arg, DEFAULT_TIME_SLICE);
 }
 
 void TCB::yield()

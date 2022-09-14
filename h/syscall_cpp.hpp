@@ -6,32 +6,21 @@
 #include "syscall_c.h"
 
 
-//void* operator new (size_t n);
-//void operator delete (void* p);
+void* operator new (size_t n);
+void operator delete (void* p);
 
 class Thread {
 
 public:
-    Thread (void (*body)(void*), void* arg) {
+    Thread(void (*body)(void*), void* arg) {
         int a =thread_create(&myHandle, body, arg);
-        char c='0';
-        __putc(c+a);
+        a++;
     }
 
     virtual ~Thread ();
-    int start (){
-        if (myHandle->getBody()!= nullptr){
-            Scheduler::put(myHandle);
-            return 0;
-        }
-        return -1;
-    }
-    static void dispatch (){
-        thread_dispatch();
-    }
-    static int sleep (time_t){
-        return 0;
-    }
+    int start ();
+    static void dispatch ();
+    static int sleep (time_t);
 protected:
     Thread ();
     virtual void run ();
@@ -64,25 +53,5 @@ public:
     static char getc ();
     static void putc (char);
 };
-
-//void *operator new(size_t n)
-//{
-//    return __mem_alloc(n);
-//}
-//
-//void *operator new[](size_t n)
-//{
-//    return __mem_alloc(n);
-//}
-//
-//void operator delete(void *p)
-//{
-//    __mem_free(p);
-//}
-//
-//void operator delete[](void *p)
-//{
-//    __mem_free(p);
-//}
 
 #endif

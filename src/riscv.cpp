@@ -70,26 +70,22 @@ void Riscv::handleSupervisorTrap()
 
 
 
-            TCB* tcb = (TCB*)__mem_alloc(sizeof (TCB));
-
-            __asm__ volatile ("mv %[a1], a1" : [a1] "=r"(tcb));
-
-            tcb->body=a2;
-            tcb->arg=a3;
-
-
+//            TCB* tcb = (TCB*)__mem_alloc(sizeof (TCB));
+//            __asm__ volatile ("mv %[a1], a1" : [a1] "=r"(tcb));
+//            tcb->body=a2;
+//            tcb->arg=a3;
 //            tcb->stack= (a2!=nullptr? (uint64*) __mem_alloc(DEFAULT_STACK_SIZE) : nullptr);
-            tcb->context={(uint64) &TCB::threadWrapper,
-                          tcb->stack != nullptr ? (uint64) &tcb->stack[DEFAULT_STACK_SIZE] : 0
-            };
+//            tcb->context={(uint64) &TCB::threadWrapper,
+//                          tcb->stack != nullptr ? (uint64) &tcb->stack[DEFAULT_STACK_SIZE] : 0
+//            };
+//            tcb->timeSlice=DEFAULT_TIME_SLICE;
+//            tcb->finished=false;
+//            uint64 a= (tcb!= nullptr)?0: -1;
+//            __asm__ volatile("mv a0, %0"::"r"(a));
 
-            if(a2!= nullptr){
-                tcb->stack=(uint64*) __mem_alloc(DEFAULT_STACK_SIZE);
-            }
-            else tcb->stack= nullptr;
-
-            tcb->timeSlice=DEFAULT_TIME_SLICE;
-            tcb->finished=false;
+            TCB* tcb;
+            __asm__ volatile ("mv %[a1], a1" : [a1] "=r"(tcb));
+            tcb = TCB::createThread(a2, a3);
             uint64 a= (tcb!= nullptr)?0: -1;
             __asm__ volatile("mv a0, %0"::"r"(a));
 

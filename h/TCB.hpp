@@ -52,17 +52,18 @@ public:
     static TCB *running;
 
 private:
-//    TCB(Body body, uint64 timeSlice) :
-//            body(body),
-//            stack(body != nullptr ? new uint64[DEFAULT_STACK_SIZE] : nullptr),
-//            context({(uint64) &threadWrapper,
-//                     stack != nullptr ? (uint64) &stack[DEFAULT_STACK_SIZE] : 0
-//                    }),
-//            timeSlice(timeSlice),
-//            finished(false)
-//    {
+    TCB(Body body, void* arg, uint64 timeSlice) :
+            body(body),
+            arg(arg),
+            stack(body != nullptr ? new uint64[DEFAULT_STACK_SIZE] : nullptr),
+            context({(uint64) &threadWrapper,
+                     stack != nullptr ? (uint64) &stack[DEFAULT_STACK_SIZE] : 0
+                    }),
+            timeSlice(timeSlice),
+            finished(false)
+    {
 //        if (body != nullptr) { Scheduler::put(this); }
-//    }
+    }
 
     struct Context
     {
@@ -71,10 +72,10 @@ private:
     };
 
     Body body;
+    void* arg;
     uint64 *stack;
     Context context;
     uint64 timeSlice;
-    void* arg;
     bool finished;
 
     friend class Riscv;
