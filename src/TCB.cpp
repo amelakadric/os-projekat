@@ -8,7 +8,7 @@ uint64 TCB::timeSliceCounter = 0;
 
 TCB *TCB::createThread(Body body, void* arg)
 {
-    TCB* tcb = (TCB*)__mem_alloc(sizeof (tcb));
+    TCB* tcb = (TCB*)__mem_alloc(sizeof (TCB));
     tcb->body=body;
     tcb->arg=arg;
     tcb->stack= (body!=nullptr? (uint64*) __mem_alloc(DEFAULT_STACK_SIZE) : nullptr);

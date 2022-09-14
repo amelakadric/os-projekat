@@ -16,6 +16,7 @@ void Riscv::popSppSpie()
 void Riscv::handleSupervisorTrap()
 {
     uint64 scause = r_scause();
+
     if (scause == 0x0000000000000008UL || scause == 0x0000000000000009UL)
     {
         // interrupt: no; cause code: environment call from U-mode(8) or S-mode(9)
@@ -50,24 +51,48 @@ void Riscv::handleSupervisorTrap()
 
         }
         else if (a0 == 0x0000000000000011UL){
-//            //thread_create(&myhandle-a3, body-a4, arg-a5, stek??)
+//            //thread_create(&myhandle-a1, body-a2, arg-a3, stek??)
 //
-//
-            Body a4;
-            __asm__ volatile ("mv %[a4], a4" : [a4] "=r"(a4));
+            Body a2;
+            __asm__ volatile ("mv %[a2], a2" : [a2] "=r"(a2));
 
             //arg
-            void* a5;
-            __asm__ volatile ("mv %[a5], a5" : [a5] "=r"(a5));
-
-            TCB *a3;
+            void* a3;
             __asm__ volatile ("mv %[a3], a3" : [a3] "=r"(a3));
 
-            a3=TCB::createThread(a4, a5);
+//            TCB *a1;
 
-            uint64 a= (a3!= nullptr)?0: -1;
+//            a1=TCB::createThread(a2, a3);
+//
+//            uint64 a= (a1!= nullptr)?0: -1;
 
+//            __asm__ volatile("mv a0, %0"::"r"(a));
+
+
+
+            TCB* tcb = (TCB*)__mem_alloc(sizeof (TCB));
+
+            __asm__ volatile ("mv %[a1], a1" : [a1] "=r"(tcb));
+
+            tcb->body=a2;
+            tcb->arg=a3;
+
+
+//            tcb->stack= (a2!=nullptr? (uint64*) __mem_alloc(DEFAULT_STACK_SIZE) : nullptr);
+            tcb->context={(uint64) &TCB::threadWrapper,
+                          tcb->stack != nullptr ? (uint64) &tcb->stack[DEFAULT_STACK_SIZE] : 0
+            };
+
+            if(a2!= nullptr){
+                tcb->stack=(uint64*) __mem_alloc(DEFAULT_STACK_SIZE);
+            }
+            else tcb->stack= nullptr;
+
+            tcb->timeSlice=DEFAULT_TIME_SLICE;
+            tcb->finished=false;
+            uint64 a= (tcb!= nullptr)?0: -1;
             __asm__ volatile("mv a0, %0"::"r"(a));
+
 
         }
         else if (a0 == 0x0000000000000012UL){
