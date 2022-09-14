@@ -1,28 +1,12 @@
 #include "../lib/hw.h"
 #include "../lib/console.h"
-#include "../h/MemoryAllocator.hpp"
+//#include "../h/MemoryAllocator.hpp"
+#include "../h/syscall_cpp.hpp"
+#include "../h/riscv.hpp"
 
 int main() {
 
-    int n = 10;
-    char* niz = (char*)MemoryAllocator::getInstance()->malloc(1);
-    if(niz == nullptr) {
-        __putc('?');
-    }
-
-    for(int i = 0; i < n; i++) {
-        niz[i] = 'k';
-    }
-
-    for(int i = 0; i < n; i++) {
-        __putc(niz[i]);
-        __putc(' ');
-    }
-
-    int status = MemoryAllocator::getInstance()->free(niz);;
-    if(status != 0) {
-        __putc('?');
-    }
+    Riscv::w_stvec((uint64) &Riscv::supervisorTrap);
 
     return 0;
 

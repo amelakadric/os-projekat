@@ -1,6 +1,7 @@
 //#include "../lib/mem.h"
 #include "TCB.hpp"
 
+
 void* mem_alloc(size_t size){
     __asm__ volatile("mv a1, %0"::"r"(size));
     __asm__ volatile("li a0, 0x01");
@@ -62,7 +63,7 @@ void thread_dispatch(){
 //int sem_signal(sem_t id);
 
 typedef unsigned long time_t;
-int time_sleep(time_t);
+//int time_sleep(time_t);
 
 //const int EOF = -1;
 //char getc();

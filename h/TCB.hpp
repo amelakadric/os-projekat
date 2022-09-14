@@ -6,35 +6,37 @@
 
 typedef TCB* thread_t;
 
+
 class TCB
 {
-private:
-    void* operator new(size_t size){
-        MemoryAllocator* mem=MemoryAllocator::getInstance();
-        return mem->malloc(size);
-    }
-    void* operator new[](size_t size){
-        MemoryAllocator* mem=MemoryAllocator::getInstance();
-        return mem->malloc(size);
-    }
-
-    void operator delete(void *p)
-    {
-        MemoryAllocator* mem=MemoryAllocator::getInstance();
-        mem->free(p);
-    }
-
-    void operator delete[](void *p)
-    {
-        MemoryAllocator* mem=MemoryAllocator::getInstance();
-        mem->free(p);
-    }
+//private:
+//    void* operator new(size_t size){
+//        MemoryAllocator* mem=MemoryAllocator::getInstance();
+//        return mem->malloc(size);
+//    }
+//    void* operator new[](size_t size){
+//        MemoryAllocator* mem=MemoryAllocator::getInstance();
+//        return mem->malloc(size);
+//    }
+//
+//    void operator delete(void *p)
+//    {
+//        MemoryAllocator* mem=MemoryAllocator::getInstance();
+//        mem->free(p);
+//    }
+//
+//    void operator delete[](void *p)
+//    {
+//        MemoryAllocator* mem=MemoryAllocator::getInstance();
+//        mem->free(p);
+//    }
 public:
-    using Body = void (*)();
+    using Body = void (*)(void*);
 
     ~TCB() { delete[] stack; }
 
     bool isFinished() const { return finished; }
+
 
     void setFinished(bool value) { finished = value; }
 
@@ -84,11 +86,16 @@ private:
 
     static void dispatch();
 
+    static int exitThread();
+
+
     static uint64 timeSliceCounter;
 
 //    static uint64 constexpr STACK_SIZE = 1024;
 //    static uint64 constexpr TIME_SLICE = 2;
 };
+
+
 
 
 

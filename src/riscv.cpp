@@ -5,7 +5,7 @@
 //#include "../lib/console.h"
 //#include "../h/MemoryAllocator.hpp"
 
-using Body = void (*)();
+using Body = void (*)(void*);
 
 void Riscv::popSppSpie()
 {
@@ -29,23 +29,23 @@ void Riscv::handleSupervisorTrap()
         uint64 a0 = r_a0();
         if (a0 == 0x0000000000000001UL){
             //mem_alloc(size_t size-a1)
-            size_t a1;
-            void *a;
-            __asm__ volatile ("mv %[a1], a1" : [a1] "=r"(a1));
-
-            MemoryAllocator* memAlloc= MemoryAllocator::getInstance();
-            a=memAlloc->malloc(a1);
-            __asm__ volatile("mv a0, %0"::"r"(a));
+//            size_t a1;
+//            void *a;
+//            __asm__ volatile ("mv %[a1], a1" : [a1] "=r"(a1));
+//
+//            MemoryAllocator* memAlloc= MemoryAllocator::getInstance();
+//            a=memAlloc->malloc(a1);
+//            __asm__ volatile("mv a0, %0"::"r"(a));
         }
         else if (a0 == 0x0000000000000002UL){
             //mem_free
-            void* a2;
-            uint64 a;
-            __asm__ volatile ("mv %[a2], a2" : [a2] "=r"(a2));
-
-            MemoryAllocator* memAlloc= MemoryAllocator::getInstance();
-            a=memAlloc->free(a2);
-            __asm__ volatile("mv a0, %0"::"r"(a));
+//            void* a2;
+//            uint64 a;
+//            __asm__ volatile ("mv %[a2], a2" : [a2] "=r"(a2));
+//
+//            MemoryAllocator* memAlloc= MemoryAllocator::getInstance();
+//            a=memAlloc->free(a2);
+//            __asm__ volatile("mv a0, %0"::"r"(a));
 
 
         }
@@ -53,30 +53,35 @@ void Riscv::handleSupervisorTrap()
 //            //thread_create(&myhandle-a3, body-a4, arg-a5, stek??)
 //
 //
-//            Body a4;
-//            __asm__ volatile ("mv %[a4], a4" : [a4] "=r"(a4));
-//
-//            void* a5;
-//            __asm__ volatile ("mv %[a5], a5" : [a5] "=r"(a5));
-//
-//            TCB *a3;
-//            __asm__ volatile ("mv %[a3], a3" : [a3] "=r"(a3));
-//            a3->body=a4;
-//            a3->arg=a5;
-//            a3->stack=(a3->body != nullptr ? new uint64[DEFAULT_STACK_SIZE] : nullptr);
-//            a3->context.ra=(uint64) &a3->threadWrapper;
-//            a3->context.sp=a3->stack != nullptr ? (uint64) &a3->stack[DEFAULT_STACK_SIZE] : 0;
-//            a3->timeSlice=DEFAULT_TIME_SLICE;
-//            a3->finished=false;
+            Body a4;
+            __asm__ volatile ("mv %[a4], a4" : [a4] "=r"(a4));
+
+            //arg
+            void* a5;
+            __asm__ volatile ("mv %[a5], a5" : [a5] "=r"(a5));
+
+            TCB *a3;
+            __asm__ volatile ("mv %[a3], a3" : [a3] "=r"(a3));
+
+            a3=TCB::createThread(a4, a5);
+
+            uint64 a= (a3!= nullptr)?0: -1;
+
+            __asm__ volatile("mv a0, %0"::"r"(a));
 
         }
         else if (a0 == 0x0000000000000012UL){
             //thread_exit
+            uint64 a;
 
+            a=TCB::exitThread();
+
+            __asm__ volatile("mv a0, %0"::"r"(a));
         }
         else if (a0 == 0x0000000000000013UL){
             //thread_dispatch()
-//            TCB::dispatch();
+            TCB::timeSliceCounter = 0;
+            TCB::dispatch();
         }
 
         w_sstatus(sstatus);

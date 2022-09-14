@@ -8,13 +8,26 @@ uint64 TCB::timeSliceCounter = 0;
 
 TCB *TCB::createThread(Body body, void* arg)
 {
-    return new TCB();
+    TCB* tcb = (TCB*)__mem_alloc(sizeof (tcb));
+    tcb->body=body;
+    tcb->arg=arg;
+    tcb->stack= (body!=nullptr? (uint64*) __mem_alloc(DEFAULT_STACK_SIZE) : nullptr);
+    tcb->context={(uint64) &threadWrapper,
+                     tcb->stack != nullptr ? (uint64) &tcb->stack[DEFAULT_STACK_SIZE] : 0
+                    };
+    tcb->timeSlice=DEFAULT_TIME_SLICE;
+    tcb->finished=false;
+    return tcb;
 }
 
 void TCB::yield()
 {
-    __asm__ volatile ("ecall");
-    //ovde se kupi  vrednost iz a0
+    Riscv::pushRegisters();
+
+    TCB::dispatch();
+
+    Riscv::popRegisters();
+
 }
 
 void TCB::dispatch()
@@ -29,7 +42,17 @@ void TCB::dispatch()
 void TCB::threadWrapper()
 {
     Riscv::popSppSpie();
-    running->body();
+    running->body(running->arg);
     running->setFinished(true);
     TCB::yield();
+}
+
+int TCB::exitThread() {
+    running->setFinished(true);
+    TCB *old = running;
+    running = Scheduler::get();
+    timeSliceCounter=0;
+    TCB::contextSwitch(&old->context, &running->context);
+    if (running== nullptr)return -1;
+    return 0;
 }

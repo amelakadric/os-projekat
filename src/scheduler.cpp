@@ -11,9 +11,9 @@ TCB *Scheduler::get()
     return readyThreadQueue.removeFirst();
 }
 
-void Scheduler::put(TCB *ccb)
+void Scheduler::put(TCB *tcb)
 {
-    readyThreadQueue.addLast(ccb);
+    readyThreadQueue.addLast(tcb);
 }
 
 Scheduler *Scheduler::getInstance() {

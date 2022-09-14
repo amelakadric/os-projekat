@@ -4,10 +4,8 @@
 
 #ifndef PROJECT_BASE_LIST_HPP
 #define PROJECT_BASE_LIST_HPP
-//#include "syscall_cpp.hpp"
 
-#include "../lib/hw.h"
-#include "MemoryAllocator.hpp"
+#include "../lib/mem.h"
 template<typename T>
 class List
 {
@@ -17,53 +15,12 @@ private:
         T *data;
         Elem *next;
 
-        void* operator new(size_t size){
-            MemoryAllocator* mem=MemoryAllocator::getInstance();
-            return mem->malloc(size);
-        }
-        void* operator new[](size_t size){
-            MemoryAllocator* mem=MemoryAllocator::getInstance();
-            return mem->malloc(size);
-        }
 
-        void operator delete(void *p)
-        {
-            MemoryAllocator* mem=MemoryAllocator::getInstance();
-            mem->free(p);
-        }
-
-        void operator delete[](void *p)
-        {
-            MemoryAllocator* mem=MemoryAllocator::getInstance();
-            mem->free(p);
-        }
 
         Elem(T *data, Elem *next) : data(data), next(next) {}
-
     };
 
     Elem *head, *tail;
-
-    void* operator new(size_t size){
-        MemoryAllocator* mem=MemoryAllocator::getInstance();
-        return mem->malloc(size);
-    }
-    void* operator new[](size_t size){
-        MemoryAllocator* mem=MemoryAllocator::getInstance();
-        return mem->malloc(size);
-    }
-
-    void operator delete(void *p)
-    {
-        MemoryAllocator* mem=MemoryAllocator::getInstance();
-        mem->free(p);
-    }
-
-    void operator delete[](void *p)
-    {
-        MemoryAllocator* mem=MemoryAllocator::getInstance();
-        mem->free(p);
-    }
 
 public:
     List() : head(0), tail(0) {}
@@ -72,16 +29,42 @@ public:
 
     List<T> &operator=(const List<T> &) = delete;
 
+//    void *operator new(size_t n)
+//    {
+//        return __mem_alloc(n);
+//    }
+//
+//    void *operator new[](size_t n)
+//    {
+//        return __mem_alloc(n);
+//    }
+//
+//    void operator delete(void *p)
+//    {
+//        __mem_free(p);
+//    }
+//
+//    void operator delete[](void *p)
+//    {
+//        __mem_free(p);
+//    }
+
+
+
     void addFirst(T *data)
     {
-        Elem *elem = new Elem(data, head);
+        Elem *elem = (Elem*)__mem_alloc(sizeof(Elem));
+        elem->data=data;
+        elem->next= head;
         head = elem;
         if (!tail) { tail = head; }
     }
 
     void addLast(T *data)
     {
-        Elem *elem = new Elem(data, 0);
+        Elem *elem = (Elem*)__mem_alloc(sizeof(Elem));
+        elem->data=data;
+        elem->next= nullptr;
         if (tail)
         {
             tail->next = elem;
@@ -101,7 +84,7 @@ public:
         if (!head) { tail = 0; }
 
         T *ret = elem->data;
-        delete elem;
+        __mem_free(elem);
         return ret;
     }
 
@@ -127,7 +110,7 @@ public:
         tail = prev;
 
         T *ret = elem->data;
-        delete elem;
+        __mem_free(elem);
         return ret;
     }
 
@@ -137,5 +120,6 @@ public:
         return tail->data;
     }
 };
+
 
 #endif //PROJECT_BASE_LIST_HPP

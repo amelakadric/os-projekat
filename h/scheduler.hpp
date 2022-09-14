@@ -6,35 +6,42 @@
 #define PROJECT_BASE_SCHEDULER_HPP
 #include "list.hpp"
 //#include "TCB.hpp"
+//#include "syscall_cpp.hpp"
 
 class TCB;
 
 class Scheduler {
 private:
     static List<TCB> readyThreadQueue;
-    Scheduler* instance =new Scheduler();
+    Scheduler* instance = (Scheduler*)__mem_alloc(sizeof (Scheduler));
     Scheduler(){}
 
-    void* operator new(size_t size){
-        MemoryAllocator* mem=MemoryAllocator::getInstance();
-        return mem->malloc(size);
-    }
-    void* operator new[](size_t size){
-        MemoryAllocator* mem=MemoryAllocator::getInstance();
-        return mem->malloc(size);
-    }
 
-    void operator delete(void *p)
-    {
-        MemoryAllocator* mem=MemoryAllocator::getInstance();
-        mem->free(p);
-    }
+//    void* operator new(size_t size){
+////        MemoryAllocator* mem=MemoryAllocator::getInstance();
+////        return mem->malloc(size);
+//        return __mem_alloc(size);
+//    }
+//    void* operator new[](size_t size){
+////        MemoryAllocator* mem=MemoryAllocator::getInstance();
+////        return mem->malloc(size);
+//        return __mem_alloc(size);
+//    }
+//
+//    void operator delete(void *p)
+//    {
+////        MemoryAllocator* mem=MemoryAllocator::getInstance();
+////        mem->free(p);
+//        __mem_free(p);
+//    }
+//
+//    void operator delete[](void *p)
+//    {
+////        MemoryAllocator* mem=MemoryAllocator::getInstance();
+////        mem->free(p);
+//        __mem_free(p);
+//    }
 
-    void operator delete[](void *p)
-    {
-        MemoryAllocator* mem=MemoryAllocator::getInstance();
-        mem->free(p);
-    }
 
 
 public:
