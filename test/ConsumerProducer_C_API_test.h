@@ -1,4 +1,4 @@
-//
+
 // Created by os on 4/17/22.
 //
 
@@ -25,7 +25,7 @@ void producerKeyboard(void *arg) {
     int key;
     int i = 0;
 //    0x1b
-    while ((key = getc()) != 0x1b) {
+    while ((key = getc()) != 'A') {
         data->buffer->put(key);
         i++;
 

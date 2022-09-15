@@ -118,8 +118,6 @@ void Riscv::handleSupervisorTrap()
 
             __asm__ volatile("mv a0, %0"::"r"(a));
 
-
-
         }
         else if (a0 == 0x0000000000000024UL) {
             //sem_signal a1-id
