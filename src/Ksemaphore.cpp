@@ -27,6 +27,10 @@ int Ksemaphore::signal() {
     return -1;
 }
 
+Ksemaphore *Ksemaphore::createSemaphore(unsigned int init) {
+    return new Ksemaphore(init);
+}
+
 
 
 

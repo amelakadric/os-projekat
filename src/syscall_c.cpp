@@ -51,13 +51,12 @@ int sem_open (
         sem_t* handle,
         unsigned init
 ){
-    __asm__ volatile("mv a2, %0"::"r"(handle));
-    __asm__ volatile("mv a1, %0"::"r"(init));
+    __asm__ volatile("mv a2, %0"::"r"(init));
+    __asm__ volatile("mv a1, %0"::"r"(handle));
     __asm__ volatile("li a0, 0x21");
     __asm__ volatile("ecall");
     uint64 a0;
     __asm__ volatile ("mv %[a0], a0" : [a0] "=r"(a0));
-
     return a0;
 
 }

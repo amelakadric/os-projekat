@@ -52,15 +52,15 @@ int Thread::sleep(time_t) {
 }
 
 Semaphore::~Semaphore() {
-
+//    sem_close(myHandle);
 }
 
 int Semaphore::wait() {
-    return 0;
+    return sem_wait(myHandle);
 }
 
 int Semaphore::signal() {
-    return 0;
+    return sem_signal(myHandle);
 }
 
 PeriodicThread::PeriodicThread(time_t period) {

@@ -19,10 +19,6 @@ void Riscv::handleSupervisorTrap()
         // interrupt: no; cause code: environment call from U-mode(8) or S-mode(9)
         uint64 sepc = r_sepc() + 4;
         uint64 sstatus = r_sstatus();
-//        TCB::timeSliceCounter = 0;
-//        TCB::dispatch();
-//        w_sstatus(sstatus);
-//        w_sepc(sepc);
 
         uint64 a0 = r_a0();
         if (a0 == 0x0000000000000001UL){
@@ -49,25 +45,6 @@ void Riscv::handleSupervisorTrap()
         }
         else if (a0 == 0x0000000000000011UL){
 //            //thread_create(&myhandle-a1, body-a2, arg-a3, stek??)
-//
-
-//            TCB *a1;
-//            a1=TCB::createThread(a2, a3);
-//            uint64 a= (a1!= nullptr)?0: -1;
-//            __asm__ volatile("mv a0, %0"::"r"(a));
-
-//            TCB* tcb = (TCB*)__mem_alloc(sizeof (TCB));
-//            __asm__ volatile ("mv %[a1], a1" : [a1] "=r"(tcb));
-//            tcb->body=a2;
-//            tcb->arg=a3;
-//            tcb->stack= (a2!=nullptr? (uint64*) __mem_alloc(DEFAULT_STACK_SIZE) : nullptr);
-//            tcb->context={(uint64) &TCB::threadWrapper,
-//                          tcb->stack != nullptr ? (uint64) &tcb->stack[DEFAULT_STACK_SIZE] : 0
-//            };
-//            tcb->timeSlice=DEFAULT_TIME_SLICE;
-//            tcb->finished=false;
-//            uint64 a= (tcb!= nullptr)?0: -1;
-//            __asm__ volatile("mv a0, %0"::"r"(a));
 
             Body a2;
             __asm__ volatile ("mv %[a2], a2" : [a2] "=r"(a2));
@@ -99,12 +76,13 @@ void Riscv::handleSupervisorTrap()
         }
         else if (a0 == 0x0000000000000021UL) {
             //sem_open a1-handle a2-init
-            Ksemaphore* sem;
-            __asm__ volatile ("mv %[a1], a1" : [a1] "=r"(sem));
 
             unsigned a2;
             __asm__ volatile ("mv %[a2], a2" : [a2] "=r"(a2));
-            sem = new Ksemaphore(a2);
+
+            Ksemaphore** sem;
+            __asm__ volatile ("mv %[a1], a1" : [a1] "=r"(sem));
+            *sem = new Ksemaphore(a2);
 
             uint64 a= (sem!= nullptr)?0: -1;
             __asm__ volatile("mv a0, %0"::"r"(a));
@@ -115,6 +93,7 @@ void Riscv::handleSupervisorTrap()
             uint64 a;
             Ksemaphore* sem;
             __asm__ volatile ("mv %[a1], a1" : [a1] "=r"(sem));
+
 
             if(sem->blocked.peekFirst()== nullptr){
                 a=0;

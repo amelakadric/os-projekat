@@ -24,6 +24,7 @@ void producerKeyboard(void *arg) {
 
     int key;
     int i = 0;
+//    0x1b
     while ((key = getc()) != 0x1b) {
         data->buffer->put(key);
         i++;
@@ -109,7 +110,8 @@ void producerConsumer_C_API() {
     Buffer *buffer = new Buffer(n);
 
     sem_open(&waitForAll, 0);
-
+//    if(waitForAll==nullptr){ printString("null\n");}
+//    else printString("nije null");
     thread_t threads[threadNum];
     thread_t consumerThread;
 

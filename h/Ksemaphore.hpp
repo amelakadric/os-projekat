@@ -12,11 +12,12 @@ typedef Ksemaphore* sem_t;
 
 class Ksemaphore{
 public:
-    Ksemaphore(unsigned short init =1):val(init){}
+    Ksemaphore(unsigned init =1):val(init){}
 
     int wait();
     int signal();
     int value() const {return val;}
+    static Ksemaphore* createSemaphore(unsigned init=1);
 
 protected:
     void block();
