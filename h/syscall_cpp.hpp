@@ -13,9 +13,9 @@ class Thread {
 
 public:
     Thread(void (*body)(void*), void* arg) {
-//        myHandle = new TCB;
-        int a =thread_create(&myHandle, body, arg);
-        a++;
+        myHandle = new TCB(body, arg, DEFAULT_TIME_SLICE);
+//        int a =thread_create(&myHandle, body, arg);
+//        a++;
     }
 
     virtual ~Thread ();
@@ -33,12 +33,14 @@ private:
 
 class Semaphore {
 public:
-    Semaphore (unsigned init = 1);
+    Semaphore (unsigned init = 1){
+
+    }
     virtual ~Semaphore();
     int wait ();
     int signal ();
 private:
-//    sem_t myHandle;
+    sem_t myHandle;
 };
 
 
@@ -52,7 +54,7 @@ protected:
 class Console {
 public:
     static char getc ();
-    static void putc (char);
+    static void putc (char c);
 };
 
 #endif

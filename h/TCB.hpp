@@ -9,27 +9,7 @@ typedef TCB* thread_t;
 
 class TCB
 {
-//private:
-//    void* operator new(size_t size){
-//        MemoryAllocator* mem=MemoryAllocator::getInstance();
-//        return mem->malloc(size);
-//    }
-//    void* operator new[](size_t size){
-//        MemoryAllocator* mem=MemoryAllocator::getInstance();
-//        return mem->malloc(size);
-//    }
-//
-//    void operator delete(void *p)
-//    {
-//        MemoryAllocator* mem=MemoryAllocator::getInstance();
-//        mem->free(p);
-//    }
-//
-//    void operator delete[](void *p)
-//    {
-//        MemoryAllocator* mem=MemoryAllocator::getInstance();
-//        mem->free(p);
-//    }
+
 public:
     using Body = void (*)(void*);
      TCB();
@@ -44,6 +24,7 @@ public:
     uint64 getTimeSlice() const { return timeSlice; }
 
     Body getBody() { return this->body;}
+    void* getArg() {return this->arg;}
 
 
     static TCB *createThread(Body body, void* arg);
@@ -52,7 +33,6 @@ public:
 
     static TCB *running;
 
-private:
     TCB(Body body, void* arg, uint64 timeSlice) :
             body(body),
             arg(arg),
@@ -63,8 +43,10 @@ private:
             timeSlice(timeSlice),
             finished(false)
     {
-        if (body != nullptr) { Scheduler::put(this); }
+//        if (body != nullptr) { Scheduler::put(this); }
     }
+
+private:
 
     struct Context
     {

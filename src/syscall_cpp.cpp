@@ -28,11 +28,8 @@ void operator delete[](void *p)
 //}
 
 int Thread::start (){
-    if (myHandle->getBody()!= nullptr){
-        Scheduler::put(myHandle);
-        return 0;
-    }
-    return -1;
+    int a = thread_create(&myHandle, myHandle->getBody(), myHandle->getArg());
+    return a;
 }
 void Thread::dispatch (){
     thread_dispatch();
@@ -48,4 +45,32 @@ Thread::~Thread() {
 
 void Thread::run() {
 
+}
+
+int Thread::sleep(time_t) {
+    return 0;
+}
+
+Semaphore::~Semaphore() {
+
+}
+
+int Semaphore::wait() {
+    return 0;
+}
+
+int Semaphore::signal() {
+    return 0;
+}
+
+PeriodicThread::PeriodicThread(time_t period) {
+
+}
+
+char Console::getc() {
+    return __getc();
+}
+
+void Console::putc(char c) {
+    __putc(c);
 }
