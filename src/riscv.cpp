@@ -120,7 +120,10 @@ void Riscv::handleSupervisorTrap()
                 a=0;
 
             }else{
-
+                while(sem->blocked.peekFirst()== nullptr){
+                    sem->signal();
+                }
+                a=-1;
             }
             __asm__ volatile("mv a0, %0"::"r"(a));
 
@@ -129,9 +132,25 @@ void Riscv::handleSupervisorTrap()
         else if (a0 == 0x0000000000000023UL) {
             //sem_wait a1-id
 
+            uint64 a;
+            Ksemaphore* sem;
+            __asm__ volatile ("mv %[a1], a1" : [a1] "=r"(sem));
+            a=sem->wait();
+
+            __asm__ volatile("mv a0, %0"::"r"(a));
+
+
+
         }
         else if (a0 == 0x0000000000000024UL) {
             //sem_signal a1-id
+
+            uint64 a;
+            Ksemaphore* sem;
+            __asm__ volatile ("mv %[a1], a1" : [a1] "=r"(sem));
+            a=sem->signal();
+
+            __asm__ volatile("mv a0, %0"::"r"(a));
         }
 
         w_sstatus(sstatus);

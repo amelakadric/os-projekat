@@ -14,8 +14,8 @@ class Ksemaphore{
 public:
     Ksemaphore(unsigned short init =1):val(init){}
 
-    void wait();
-    void signal();
+    int wait();
+    int signal();
     int value() const {return val;}
 
 protected:
