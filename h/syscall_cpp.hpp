@@ -13,6 +13,7 @@ class Thread {
 
 public:
     Thread(void (*body)(void*), void* arg) {
+//        myHandle = new TCB;
         int a =thread_create(&myHandle, body, arg);
         a++;
     }

@@ -28,7 +28,11 @@ void operator delete[](void *p)
 //}
 
 int Thread::start (){
-    return 0;
+    if (myHandle->getBody()!= nullptr){
+        Scheduler::put(myHandle);
+        return 0;
+    }
+    return -1;
 }
 void Thread::dispatch (){
     thread_dispatch();

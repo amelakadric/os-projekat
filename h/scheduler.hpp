@@ -9,7 +9,7 @@
 //#include "syscall_cpp.hpp"
 
 class TCB;
-class semaphoreK;
+class Ksemaphore;
 
 class Scheduler {
 private:

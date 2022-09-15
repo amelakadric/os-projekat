@@ -1,7 +1,7 @@
 #include "../lib/mem.h"
 #include "../lib/console.h"
 #include "TCB.hpp"
-#include "semaphoreK.hpp"
+#include "Ksemaphore.hpp"
 
 
 void* mem_alloc(size_t size);

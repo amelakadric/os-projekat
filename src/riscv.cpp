@@ -1,9 +1,6 @@
 //
 
 #include "../h/riscv.hpp"
-//#include "../h/TCB.hpp"
-//#include "../lib/console.h"
-//#include "../h/MemoryAllocator.hpp"
 
 using Body = void (*)(void*);
 
@@ -53,12 +50,6 @@ void Riscv::handleSupervisorTrap()
         else if (a0 == 0x0000000000000011UL){
 //            //thread_create(&myhandle-a1, body-a2, arg-a3, stek??)
 //
-            Body a2;
-            __asm__ volatile ("mv %[a2], a2" : [a2] "=r"(a2));
-
-            //arg
-            void* a3;
-            __asm__ volatile ("mv %[a3], a3" : [a3] "=r"(a3));
 
 //            TCB *a1;
 //            a1=TCB::createThread(a2, a3);
@@ -77,6 +68,13 @@ void Riscv::handleSupervisorTrap()
 //            tcb->finished=false;
 //            uint64 a= (tcb!= nullptr)?0: -1;
 //            __asm__ volatile("mv a0, %0"::"r"(a));
+
+            Body a2;
+            __asm__ volatile ("mv %[a2], a2" : [a2] "=r"(a2));
+
+            //arg
+            void* a3;
+            __asm__ volatile ("mv %[a3], a3" : [a3] "=r"(a3));
 
             TCB* tcb;
             __asm__ volatile ("mv %[a1], a1" : [a1] "=r"(tcb));
@@ -98,6 +96,42 @@ void Riscv::handleSupervisorTrap()
             //thread_dispatch()
             TCB::timeSliceCounter = 0;
             TCB::dispatch();
+        }
+        else if (a0 == 0x0000000000000021UL) {
+            //sem_open a1-handle a2-init
+            Ksemaphore* sem;
+            __asm__ volatile ("mv %[a1], a1" : [a1] "=r"(sem));
+
+            unsigned a2;
+            __asm__ volatile ("mv %[a2], a2" : [a2] "=r"(a2));
+            sem = new Ksemaphore(a2);
+
+            uint64 a= (sem!= nullptr)?0: -1;
+            __asm__ volatile("mv a0, %0"::"r"(a));
+
+        }
+        else if (a0 == 0x0000000000000022UL) {
+            //sem_close a1-handle
+            uint64 a;
+            Ksemaphore* sem;
+            __asm__ volatile ("mv %[a1], a1" : [a1] "=r"(sem));
+
+            if(sem->blocked.peekFirst()== nullptr){
+                a=0;
+
+            }else{
+
+            }
+            __asm__ volatile("mv a0, %0"::"r"(a));
+
+
+        }
+        else if (a0 == 0x0000000000000023UL) {
+            //sem_wait a1-id
+
+        }
+        else if (a0 == 0x0000000000000024UL) {
+            //sem_signal a1-id
         }
 
         w_sstatus(sstatus);

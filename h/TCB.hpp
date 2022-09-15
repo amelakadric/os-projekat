@@ -32,6 +32,7 @@ class TCB
 //    }
 public:
     using Body = void (*)(void*);
+     TCB();
 
     ~TCB() { delete[] stack; }
 
@@ -79,6 +80,7 @@ private:
     bool finished;
 
     friend class Riscv;
+    friend class Ksemaphore;
 
 
     static void threadWrapper();

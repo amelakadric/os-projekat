@@ -8,6 +8,7 @@
 #include "../lib/hw.h"
 #include "../h/TCB.hpp"
 #include "../lib/console.h"
+#include "../h/Ksemaphore.hpp"
 //#include "../h/MemoryAllocator.hpp"
 //#include "../h/syscall_cpp.hpp"
 
