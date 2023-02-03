@@ -10,11 +10,11 @@ void* operator new (size_t n);
 void operator delete (void* p);
 
 class Thread {
-
+    using Body = void (*)(void*);
 public:
     Thread(void (*body)(void*), void* arg) {
         myHandle = new TCB(body, arg, DEFAULT_TIME_SLICE);
-//        int a =thread_create(&myHandle, body, arg);
+//        int a =new TCB(&myHandle, body, arg);
 //        a++;
     }
 
@@ -22,6 +22,8 @@ public:
     int start ();
     static void dispatch ();
     static int sleep (time_t);
+//    static  void myWrapper();
+
 protected:
     Thread ();
     virtual void run ();

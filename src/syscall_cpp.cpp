@@ -1,6 +1,5 @@
 #include "../h/syscall_cpp.hpp"
 
-
 void *operator new(size_t n)
 {
     return __mem_alloc(n);
@@ -28,15 +27,18 @@ void operator delete[](void *p)
 //}
 
 int Thread::start (){
-    int a = thread_create(&myHandle, myHandle->getBody(), myHandle->getArg());
-    return a;
+//    int a = thread_create(&myHandle, myWrapper, nullptr);
+//    return a;
+//    Scheduler::put(myHandle);
+//    TCB::yield();
+    return 0;
 }
 void Thread::dispatch (){
     thread_dispatch();
 }
 
 Thread::Thread() {
-
+//    myHandle=new TCB(nullptr, nullptr, DEFAULT_TIME_SLICE);
 }
 
 Thread::~Thread() {

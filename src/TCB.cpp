@@ -18,7 +18,9 @@ TCB *TCB::createThread(Body body, void* arg)
 //    tcb->timeSlice=DEFAULT_TIME_SLICE;
 //    tcb->finished=false;
     TCB * t = new TCB(body, arg, DEFAULT_TIME_SLICE);
-    if (body != nullptr) { Scheduler::put(t); }
+    if (body != nullptr) {
+        Scheduler::put(t);
+    }
     return t;
 }
 

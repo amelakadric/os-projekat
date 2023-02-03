@@ -5,7 +5,7 @@
 #ifndef XV6_CONSUMERPRODUCER_C_API_TEST_H
 #define XV6_CONSUMERPRODUCER_C_API_TEST_H
 
-#include "../h/syscall_c.h"
+#include "../h/syscall_cpp.hpp"
 
 #include "buffer.hpp"
 
@@ -21,11 +21,11 @@ volatile int threadEnd = 0;
 
 void producerKeyboard(void *arg) {
     struct thread_data *data = (struct thread_data *) arg;
-
     int key;
     int i = 0;
 //    0x1b
-    while ((key = getc()) != 'A') {
+    while ((key = __getc()) != 'A') {
+        __putc(key);
         data->buffer->put(key);
         i++;
 
@@ -45,9 +45,7 @@ void producer(void *arg) {
 
     int i = 0;
     while (!threadEnd) {
-        data->buffer->put(data->id + '0');
         i++;
-
         if (i % (10 * data->id) == 0) {
             thread_dispatch();
         }
@@ -108,6 +106,10 @@ void producerConsumer_C_API() {
     }
 
     Buffer *buffer = new Buffer(n);
+//    buffer->put(3);
+//    char c='0';
+//    c+=buffer->get();
+//    __putc(c);
 
     sem_open(&waitForAll, 0);
 //    if(waitForAll==nullptr){ printString("null\n");}
@@ -122,6 +124,7 @@ void producerConsumer_C_API() {
     data[threadNum].wait = waitForAll;
     thread_create(&consumerThread, consumer, data + threadNum);
 
+
     for (int i = 0; i < threadNum; i++) {
         data[i].id = i;
         data[i].buffer = buffer;
@@ -131,6 +134,11 @@ void producerConsumer_C_API() {
                       i > 0 ? producer : producerKeyboard,
                       data + i);
     }
+
+//    data[0].buffer->put(3);
+//    char c='0';
+//    c+=buffer->get();
+//    __putc(c);
 
     thread_dispatch();
 

@@ -112,9 +112,9 @@ void Riscv::handleSupervisorTrap()
             //sem_wait a1-id
 
             uint64 a;
-            Ksemaphore* sem;
-            __asm__ volatile ("mv %[a1], a1" : [a1] "=r"(sem));
-            a=sem->wait();
+            Ksemaphore* a1;
+            __asm__ volatile ("mv %[a1], a1" : [a1] "=r"(a1));
+            a=a1->wait();
 
             __asm__ volatile("mv a0, %0"::"r"(a));
 

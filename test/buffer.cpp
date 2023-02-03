@@ -1,7 +1,7 @@
 #include "buffer.hpp"
 
 Buffer::Buffer(int _cap) : cap(_cap + 1), head(0), tail(0) {
-    buffer = (int *)mem_alloc(sizeof(int) * cap);
+    buffer = (int *)__mem_alloc(sizeof(int) * cap);
     sem_open(&itemAvailable, 0);
     sem_open(&spaceAvailable, _cap);
     sem_open(&mutexHead, 1);

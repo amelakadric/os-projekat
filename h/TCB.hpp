@@ -12,7 +12,7 @@ class TCB
 
 public:
     using Body = void (*)(void*);
-     TCB();
+    TCB();
 
     ~TCB() { delete[] stack; }
 
