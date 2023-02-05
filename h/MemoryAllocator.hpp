@@ -8,41 +8,33 @@
 class MemoryAllocator {
 private:
 
-    static MemoryAllocator *instance;
+//    static MemoryAllocator *instance;
 
-    struct BlockHeader {
-        BlockHeader *next= nullptr;
+    struct FreeBlockHeader {
+        FreeBlockHeader *next= nullptr;
+        FreeBlockHeader *prev= nullptr;
         size_t size;
-        bool free=true;
+//        bool free=true;
     };
-    static char *heapStart;
-    static BlockHeader *top;
-    static BlockHeader *blockHead;
+    static FreeBlockHeader *freeBlockHead;
+    static FreeBlockHeader *tail;
 
-    inline size_t align(size_t n) {
+    inline static size_t align(size_t n) {
         return (n + MEM_BLOCK_SIZE - 1) & ~(MEM_BLOCK_SIZE - 1);
     }
 
+
     inline size_t allocSize(size_t size) {
-        return size + sizeof(BlockHeader);
+        return size + sizeof(FreeBlockHeader)+sizeof(int*);
     }
 
 
-    BlockHeader* allocInHeap(size_t size);
-
-
-
-    BlockHeader* firstfit(size_t size);
-
-    BlockHeader* findBlock(BlockHeader* p);
-
-    void setBlock(size_t size, bool f);
+    static FreeBlockHeader* findBlock(FreeBlockHeader* p);
 
 
 
 public:
-    static MemoryAllocator* getInstance();
-
+    static void initMemoryAllocator();
     void *malloc(size_t size);
 
     int free(void* p);
