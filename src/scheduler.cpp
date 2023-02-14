@@ -19,3 +19,12 @@ void Scheduler::put(TCB *tcb)
 Scheduler *Scheduler::getInstance() {
     return this->instance;
 }
+
+void *Scheduler::operator new(size_t n) {
+    return MemoryAllocator::malloc(n);
+}
+
+void Scheduler::operator delete(void *p) {
+    MemoryAllocator::free(p);
+    return;
+}

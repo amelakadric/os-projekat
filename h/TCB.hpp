@@ -3,6 +3,7 @@
 
 #include "../lib/hw.h"
 #include "scheduler.hpp"
+#include "MemoryAllocator.hpp"
 
 typedef TCB* thread_t;
 
@@ -10,6 +11,7 @@ typedef TCB* thread_t;
 class TCB
 {
 
+    static void threadWrapper();
 public:
     using Body = void (*)(void*);
     TCB();
@@ -26,24 +28,39 @@ public:
     Body getBody() { return this->body;}
     void* getArg() {return this->arg;}
 
+    static void* operator new (size_t n);
+    static void operator delete (void* p);
+
 
     static TCB *createThread(Body body, void* arg);
 
+    static TCB* createThreadWithoutPuttingInScheduler(Body body, void* arg);
+
+    static void putInScheduler(TCB* tcb);
+
     static void yield();
+
+    static void yieldWithoutScheduler();
 
     static TCB *running;
 
-    TCB(Body body, void* arg, uint64 timeSlice) :
-            body(body),
-            arg(arg),
-            stack(body != nullptr ? new uint64[DEFAULT_STACK_SIZE] : nullptr),
-            context({(uint64) &threadWrapper,
-                     stack != nullptr ? (uint64) &stack[DEFAULT_STACK_SIZE] : 0
-                    }),
-            timeSlice(timeSlice),
-            finished(false)
+//    body(body),
+//            arg(arg),
+//            stack(body != nullptr ? (uint64*)MemoryAllocator::malloc(sizeof(uint64) * DEFAULT_STACK_SIZE) : nullptr),
+//    context({(uint64) &threadWrapper,
+//                stack != nullptr ? (uint64) &stack[DEFAULT_STACK_SIZE] : 0
+//    }),
+//    timeSlice(timeSlice),
+//            finished(false)
+    TCB(Body bodyy, void* argg, uint64 timeSlicee)
     {
-//        if (body != nullptr) { Scheduler::put(this); }
+        body = bodyy;
+        arg=argg;
+        stack=(body != nullptr ? (uint64*)MemoryAllocator::malloc(sizeof(uint64) * DEFAULT_STACK_SIZE) : nullptr);
+        context.ra = (uint64) &threadWrapper;
+        context.sp =(stack != nullptr ? (uint64) &stack[DEFAULT_STACK_SIZE] : 0);
+        timeSlice=timeSlicee;
+        finished= false;
     }
 
 private:
@@ -65,11 +82,14 @@ private:
     friend class Ksemaphore;
 
 
-    static void threadWrapper();
+
+
 
     static void contextSwitch(Context *oldContext, Context *runningContext);
 
     static void dispatch();
+
+    static void dispatchWithoutScheduler();
 
     static int exitThread();
 

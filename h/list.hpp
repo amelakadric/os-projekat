@@ -6,6 +6,7 @@
 #define PROJECT_BASE_LIST_HPP
 
 #include "../lib/mem.h"
+#include "MemoryAllocator.hpp"
 
 template<typename T>
 class List
@@ -27,6 +28,8 @@ public:
     List(const List<T> &) = delete;
 
     List<T> &operator=(const List<T> &) = delete;
+    static void* operator new (size_t n);
+    static void operator delete (void* p);
 
     void addFirst(T *data)
     {
@@ -93,5 +96,15 @@ public:
         return tail->data;
     }
 };
+
+template<typename T>
+void List<T>::operator delete(void *p) {
+    MemoryAllocator::free(p);
+}
+
+template<typename T>
+void *List<T>::operator new(size_t n) {
+    return MemoryAllocator::malloc(n);
+}
 
 #endif //PROJECT_BASE_LIST_HPP

@@ -21,15 +21,15 @@ private:
 
 public:
     Buffer(int _cap);
+
     ~Buffer();
 
     void put(int val);
+
     int get();
 
     int getCnt();
-
 };
-
 
 #endif //OS1_BUFFER_CPP_H
 

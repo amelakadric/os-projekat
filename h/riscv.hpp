@@ -5,11 +5,11 @@
 #ifndef PROJECT_BASE_RISCV_HPP
 #define PROJECT_BASE_RISCV_HPP
 
-#include "../lib/hw.h"
+//#include "../lib/hw.h"
 #include "../h/TCB.hpp"
 #include "../lib/console.h"
 #include "../h/Ksemaphore.hpp"
-//#include "../h/MemoryAllocator.hpp"
+#include "../h/MemoryAllocator.hpp"
 //#include "../h/syscall_cpp.hpp"
 
 //class TCB;

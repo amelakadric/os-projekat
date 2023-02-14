@@ -1,20 +1,20 @@
-//
-// Created by os on 8/27/22.
-//
-
 #ifndef PROJECT_BASE_SCHEDULER_HPP
 #define PROJECT_BASE_SCHEDULER_HPP
 #include "list.hpp"
-//#include "TCB.hpp"
-//#include "syscall_cpp.hpp"
+#include "MemoryAllocator.hpp"
 
 class TCB;
 class Ksemaphore;
 
 class Scheduler {
+
+public:
+    static void* operator new (size_t n);
+    static void operator delete (void* p);
+
 private:
     static List<TCB> readyThreadQueue;
-    Scheduler* instance = new Scheduler;
+    Scheduler* instance = (Scheduler*)new Scheduler;
     Scheduler(){}
 
 
@@ -38,8 +38,8 @@ private:
 //
 //    void operator delete[](void *p)
 //    {
-////        MemoryAllocator* mem=MemoryAllocator::getInstance();
-////        mem->free(p);
+//        MemoryAllocator* mem=MemoryAllocator::getInstance();
+//        mem->free(p);
 //        __mem_free(p);
 //    }
 

@@ -2,52 +2,44 @@
 
 void *operator new(size_t n)
 {
-    return __mem_alloc(n);
+    return MemoryAllocator::malloc(n);
 }
 
 void *operator new[](size_t n)
 {
-    return __mem_alloc(n);
+    return MemoryAllocator::malloc(n);
 }
 
 void operator delete(void *p)
 {
-    __mem_free(p);
+    MemoryAllocator::free(p);
 }
 
 void operator delete[](void *p)
 {
-    __mem_free(p);
+    MemoryAllocator::free(p);
 }
-
-
-//Thread::Thread (void (*body)(void*), void* arg) {
-//    int a =thread_create(&myHandle, body, arg);
-//    a++;
-//}
 
 int Thread::start (){
 //    int a = thread_create(&myHandle, myWrapper, nullptr);
 //    return a;
 //    Scheduler::put(myHandle);
 //    TCB::yield();
+    thread_start(&myHandle);
     return 0;
 }
 void Thread::dispatch (){
     thread_dispatch();
 }
 
+Thread::Thread(void (*body)(void*), void* arg) {
+    thread_create2(&myHandle, body, arg);
+}
 Thread::Thread() {
-//    myHandle=new TCB(nullptr, nullptr, DEFAULT_TIME_SLICE);
+    thread_create2(&myHandle, myWrapper, this);
 }
 
-Thread::~Thread() {
-
-}
-
-void Thread::run() {
-
-}
+Thread::~Thread()=default;
 
 int Thread::sleep(time_t) {
     return 0;

@@ -8,30 +8,34 @@ uint64 TCB::timeSliceCounter = 0;
 
 TCB *TCB::createThread(Body body, void* arg)
 {
-//    TCB* tcb = (TCB*)__mem_alloc(sizeof (TCB));
-//    tcb->body=body;
-//    tcb->arg=arg;
-//    tcb->stack= (body!=nullptr? (uint64*) __mem_alloc(DEFAULT_STACK_SIZE) : nullptr);
-//    tcb->context={(uint64) &threadWrapper,
-//                     tcb->stack != nullptr ? (uint64) &tcb->stack[DEFAULT_STACK_SIZE] : 0
-//                    };
-//    tcb->timeSlice=DEFAULT_TIME_SLICE;
-//    tcb->finished=false;
-    TCB * t = new TCB(body, arg, DEFAULT_TIME_SLICE);
+    TCB* t = (TCB*)new TCB(body, arg, DEFAULT_TIME_SLICE);
     if (body != nullptr) {
         Scheduler::put(t);
     }
     return t;
 }
 
+void TCB::putInScheduler(TCB *tcb) {
+    Scheduler::put(tcb);
+}
+
+TCB *TCB::createThreadWithoutPuttingInScheduler(Body body, void* arg)
+{
+    TCB* t = (TCB*)new TCB(body, arg, DEFAULT_TIME_SLICE);
+        return t;
+}
+
 void TCB::yield()
 {
     Riscv::pushRegisters();
-
     TCB::dispatch();
-
     Riscv::popRegisters();
-
+}
+void TCB::yieldWithoutScheduler()
+{
+    Riscv::pushRegisters();
+    TCB::dispatchWithoutScheduler();
+    Riscv::popRegisters();
 }
 
 void TCB::dispatch()
@@ -52,8 +56,7 @@ void TCB::dispatch()
     TCB::contextSwitch(&old->context, &running->context);
 }
 
-void TCB::threadWrapper()
-{
+void TCB::threadWrapper(){
     Riscv::popSppSpie();
     running->body(running->arg);
     running->setFinished(true);
@@ -62,10 +65,30 @@ void TCB::threadWrapper()
 
 int TCB::exitThread() {
     running->setFinished(true);
-    TCB *old = running;
-    running = Scheduler::get();
-    timeSliceCounter=0;
-    TCB::contextSwitch(&old->context, &running->context);
-    if (running== nullptr)return -1;
+    dispatch();
+//    TCB *old = running;
+//    running = Scheduler::get();
+//    timeSliceCounter=0;
+//    TCB::contextSwitch(&old->context, &running->context);
+//    if (running== nullptr)return -1;
     return 0;
 }
+
+
+void TCB::dispatchWithoutScheduler(){
+    TCB *old = running;
+    TCB::contextSwitch(&old->context, &running->context);
+}
+
+void TCB::operator delete(void *p) {
+    MemoryAllocator::free(p);
+    return;
+
+}
+
+void *TCB::operator new(size_t n) {
+    return MemoryAllocator::malloc(sizeof (TCB));
+
+}
+
+

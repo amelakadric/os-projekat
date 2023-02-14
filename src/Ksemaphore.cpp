@@ -2,8 +2,7 @@
 
 void Ksemaphore::block() {
     blocked.addLast(TCB::running);
-    TCB::running=Scheduler::get();
-
+    TCB::yieldWithoutScheduler();
 }
 
 void Ksemaphore::unblock() {
@@ -28,8 +27,28 @@ int Ksemaphore::signal() {
 }
 
 Ksemaphore *Ksemaphore::createSemaphore(unsigned int init) {
-    return new Ksemaphore(init);
+    Ksemaphore* ksem = (Ksemaphore*) new Ksemaphore(init);
+    ksem->val=init;
+    return ksem;
 }
+
+int Ksemaphore::closeSemaphore(){
+    TCB* tcb;
+    while(this->blocked.peekFirst()!= nullptr){
+        tcb=this->blocked.removeFirst();
+        Scheduler::put(tcb);
+    }
+    return 0;
+}
+void Ksemaphore::operator delete(void *p) {
+    MemoryAllocator::free(p);
+    return;
+}
+
+void *Ksemaphore::operator new(size_t n) {
+    return MemoryAllocator::malloc(sizeof (Ksemaphore));
+}
+
 
 
 

@@ -12,11 +12,7 @@ void operator delete (void* p);
 class Thread {
     using Body = void (*)(void*);
 public:
-    Thread(void (*body)(void*), void* arg) {
-        myHandle = new TCB(body, arg, DEFAULT_TIME_SLICE);
-//        int a =new TCB(&myHandle, body, arg);
-//        a++;
-    }
+    Thread(void (*body)(void*), void* arg);
 
     virtual ~Thread ();
     int start ();
@@ -26,9 +22,14 @@ public:
 
 protected:
     Thread ();
-    virtual void run ();
+    virtual void run (){}
 private:
     thread_t myHandle;
+    static void myWrapper(void* ptr)
+    {
+        Thread* thread = (Thread*)ptr;
+        thread->run();
+    }
 
 };
 
