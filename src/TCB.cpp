@@ -77,6 +77,7 @@ int TCB::exitThread() {
 
 void TCB::dispatchWithoutScheduler(){
     TCB *old = running;
+    running = Scheduler::get();
     TCB::contextSwitch(&old->context, &running->context);
 }
 

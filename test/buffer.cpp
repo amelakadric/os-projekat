@@ -16,8 +16,8 @@ Buffer::~Buffer() {
         putc(ch);
         head = (head + 1) % cap;
     }
-    putc('!');
-    putc('\n');
+    __putc('!');
+    __putc('\n');
 
     mem_free(buffer);
     sem_close(itemAvailable);

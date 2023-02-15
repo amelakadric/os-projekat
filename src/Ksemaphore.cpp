@@ -2,7 +2,6 @@
 
 void Ksemaphore::block() {
     blocked.addLast(TCB::running);
-    TCB::yieldWithoutScheduler();
 }
 
 void Ksemaphore::unblock() {
@@ -13,6 +12,8 @@ void Ksemaphore::unblock() {
 int Ksemaphore::wait() {
     if(--val<0){
         block();
+        TCB::yieldWithoutScheduler();
+//        TCB::dispatchWithoutScheduler();
         return 0;
     }
     return -1;
