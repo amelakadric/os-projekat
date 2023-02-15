@@ -1,8 +1,6 @@
 #ifndef _syscall_cpp
 #define _syscall_cpp
 #include "../lib/console.h"
-//#include "riscv.hpp"
-//#include "TCB.hpp"
 #include "syscall_c.h"
 
 
@@ -18,7 +16,6 @@ public:
     int start ();
     static void dispatch ();
     static int sleep (time_t);
-//    static  void myWrapper();
 
 protected:
     Thread ();
@@ -36,9 +33,7 @@ private:
 
 class Semaphore {
 public:
-    Semaphore (unsigned init = 1){
-
-    }
+    Semaphore (unsigned init = 1);
     virtual ~Semaphore();
     int wait ();
     int signal ();

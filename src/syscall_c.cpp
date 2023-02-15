@@ -2,7 +2,7 @@
 
 
 void* mem_alloc(size_t size){
-    __asm__ volatile("mv a1, %0"::"r"(size));
+    __asm__ volatile("mv a7, %0"::"r"(size));
     __asm__ volatile("li a0, 0x01");
     __asm__ volatile("ecall");
     void* a0;
@@ -11,7 +11,7 @@ void* mem_alloc(size_t size){
 }
 
 int mem_free (void* r){
-    __asm__ volatile("mv a2, %0"::"r"(r));
+    __asm__ volatile("mv a7, %0"::"r"(r));
     __asm__ volatile("li a0, 0x02");
     __asm__ volatile("ecall");
 
@@ -77,7 +77,6 @@ int sem_open (sem_t* handle,unsigned init){
 }
 
 int sem_close (sem_t handle){
-    __putc('c');
     __asm__ volatile("mv a1, %0"::"r"(handle));
     __asm__ volatile("li a0, 0x22");
     __asm__ volatile("ecall");

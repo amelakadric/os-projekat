@@ -23,20 +23,20 @@ void Riscv::handleSupervisorTrap()
         uint64 a0 = r_a0();
         if (a0 == 0x0000000000000001UL){
             //mem_alloc(size_t size-a1)
-            size_t a1;
+            size_t a7;
             void *a;
-            __asm__ volatile ("mv %[a1], a1" : [a1] "=r"(a1));
+            __asm__ volatile ("mv %[a7], a7" : [a7] "=r"(a7));
 
-            a=MemoryAllocator::malloc(a1);
+            a=MemoryAllocator::malloc(a7);
             __asm__ volatile("mv a0, %0"::"r"(a));
         }
         else if (a0 == 0x0000000000000002UL){
             //mem_free
-            void* a2;
+            void* a7;
             uint64 a;
-            __asm__ volatile ("mv %[a2], a2" : [a2] "=r"(a2));
+            __asm__ volatile ("mv %[a7], a7" : [a7] "=r"(a7));
 
-            a=MemoryAllocator::free(a2);
+            a=MemoryAllocator::free(a7);
             __asm__ volatile("mv a0, %0"::"r"(a));
 
 

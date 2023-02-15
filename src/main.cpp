@@ -14,7 +14,7 @@ int main() {
     Riscv::w_stvec((uint64) &Riscv::supervisorTrap);
     Riscv::ms_sstatus(Riscv::SSTATUS_SIE);
 
-    userMain(); // puca u dispatch kad se menja kontekst scause 5, ne znam je li scheduler::get=null? za cpp api niti
+    userMain();
 
     return 0;
 

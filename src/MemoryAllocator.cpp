@@ -50,6 +50,7 @@ int MemoryAllocator::free(void* p){
         else if(fb==tail){
             tail->next=newFreeBlock;
             newFreeBlock->prev=tail;
+            newFreeBlock->next= nullptr;
             tail=newFreeBlock;
             break;
         }
@@ -64,13 +65,14 @@ int MemoryAllocator::free(void* p){
         if ((char *) newFreeBlock->prev + newFreeBlock->prev->size * MEM_BLOCK_SIZE == (char *) newFreeBlock) {
             newFreeBlock->prev->size += newFreeBlock->size;
             newFreeBlock->prev->next = newFreeBlock->next;
-            if (newFreeBlock->next)
+            if (newFreeBlock->next) {
                 newFreeBlock->next->prev = newFreeBlock->prev;
+            }
             newFreeBlock = newFreeBlock->prev;
         }
     }
     //mergovanje napred
-    if(newFreeBlock->next) {
+    if(newFreeBlock->next!= nullptr) {
         if ((char *) newFreeBlock + newFreeBlock->size * MEM_BLOCK_SIZE == (char *) newFreeBlock->next) {
             newFreeBlock->size += newFreeBlock->next->size;
             if (newFreeBlock->next->next) {
@@ -91,4 +93,3 @@ void MemoryAllocator::initMemoryAllocator() {
     tail=freeBlockHead;
 }
 
-//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

@@ -23,7 +23,7 @@ void producerKeyboard(void *arg) {
 
     int key;
     int i = 0;
-    while ((key = __getc()) != 'A') {
+    while ((key = getc()) != 'A') {
         data->buffer->put(key);
         i++;
 
@@ -62,20 +62,20 @@ void consumer(void *arg) {
         int key = data->buffer->get();
         i++;
 
-        __putc(key);
+        putc(key);
 
         if (i % (5 * data->id) == 0) {
             thread_dispatch();
         }
 
         if (i % 80 == 0) {
-            __putc('\n');
+            putc('\n');
         }
     }
 
     while (data->buffer->getCnt() > 0) {
         int key = data->buffer->get();
-        __putc(key);
+        putc(key);
     }
   sem_signal(data->wait);
 }
@@ -124,7 +124,7 @@ void producerConsumer_C_API() {
         data[i].wait = waitForAll;
 
         thread_create(threads + i,
-                      i > -1 ? producer : producerKeyboard,
+                      i > 0 ? producer : producerKeyboard,
                       data + i);
     }
 

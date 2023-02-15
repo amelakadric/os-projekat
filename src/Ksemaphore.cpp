@@ -12,8 +12,8 @@ void Ksemaphore::unblock() {
 int Ksemaphore::wait() {
     if(--val<0){
         block();
-        TCB::yieldWithoutScheduler();
-//        TCB::dispatchWithoutScheduler();
+//        TCB::yieldWithoutScheduler();
+        TCB::dispatchWithoutScheduler();
         return 0;
     }
     return -1;
