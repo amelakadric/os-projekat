@@ -30,7 +30,7 @@ namespace ConsumerProducerCPP {
         void run() override {
             int key;
             int i = 0;
-            while ((key = getc()) != 'A') {
+            while ((key = __getc()) != 0x1b) {
                 td->buffer->put(key);
                 i++;
             }

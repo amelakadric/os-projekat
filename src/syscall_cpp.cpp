@@ -61,12 +61,6 @@ int Semaphore::signal() {
     return sem_signal(myHandle);
 }
 
-
-
-PeriodicThread::PeriodicThread(time_t period) {
-
-}
-
 char Console::getc() {
     return __getc();
 }

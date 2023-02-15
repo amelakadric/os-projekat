@@ -813,7 +813,7 @@ void ProducerKeyboard::producerKeyboard(void *arg) {
     int i = 0;
     80001708:	00000913          	li	s2,0
     8000170c:	00c0006f          	j	80001718 <_ZN16ProducerKeyboard16producerKeyboardEPv+0x34>
-    while ((key = getc()) != 0x1b) {
+    while ((key = getc()) != 'A') {
         data->buffer->put(key);
         i++;
 
@@ -821,11 +821,11 @@ void ProducerKeyboard::producerKeyboard(void *arg) {
             Thread::dispatch();
     80001710:	00001097          	auipc	ra,0x1
     80001714:	a7c080e7          	jalr	-1412(ra) # 8000218c <_ZN6Thread8dispatchEv>
-    while ((key = getc()) != 0x1b) {
+    while ((key = getc()) != 'A') {
     80001718:	00000097          	auipc	ra,0x0
     8000171c:	cfc080e7          	jalr	-772(ra) # 80001414 <_Z4getcv>
     80001720:	0005059b          	sext.w	a1,a0
-    80001724:	01b00793          	li	a5,27
+    80001724:	04100793          	li	a5,65
     80001728:	02f58a63          	beq	a1,a5,8000175c <_ZN16ProducerKeyboard16producerKeyboardEPv+0x78>
         data->buffer->put(key);
     8000172c:	0084b503          	ld	a0,8(s1)

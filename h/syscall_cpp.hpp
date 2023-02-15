@@ -42,12 +42,6 @@ private:
 };
 
 
-class PeriodicThread : public Thread {
-protected:
-    PeriodicThread (time_t period);
-    virtual void periodicActivation () {}
-};
-
 
 class Console {
 public:
