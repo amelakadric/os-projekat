@@ -3,8 +3,6 @@
 void Ksemaphore::block() {
     TCB* tr=TCB::running;
     blocked.addLast(tr);
-    TCB::running=Scheduler::get();
-    TCB::contextSwitch(&tr->context, &TCB::running->context);
 }
 
 void Ksemaphore::unblock() {
@@ -15,10 +13,10 @@ void Ksemaphore::unblock() {
 int Ksemaphore::wait() {
     if(--val<0){
         block();
-//        TCB::dispatchWithoutScheduler();
+        TCB::dispatchWithoutScheduler();
         return 0;
     }
-    return 0;
+    return 1;
 }
 
 int Ksemaphore::signal() {

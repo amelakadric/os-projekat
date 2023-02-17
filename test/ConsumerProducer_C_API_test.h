@@ -35,6 +35,7 @@ void producerKeyboard(void *arg) {
     threadEnd = 1;
     data->buffer->put('!');
 
+//    printString("ovde si");
     sem_signal(data->wait);
 }
 
