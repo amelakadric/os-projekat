@@ -115,7 +115,7 @@ void Riscv::handleSupervisorTrap()
 
             a=0;
             if(sem== nullptr){
-                a=-1;
+                a=1;
             }
             else{
                 sem->closeSemaphore();
@@ -130,12 +130,8 @@ void Riscv::handleSupervisorTrap()
             Ksemaphore* a1;
             __asm__ volatile ("mv %[a1], a1" : [a1] "=r"(a1));
 
-//            if(a1== nullptr){
-//                a=-1;
-//            }
-//            else {
-                a = a1->wait();
-//            }
+            a = a1->wait();
+
 
             __asm__ volatile("mv a0, %0"::"r"(a));
 
@@ -175,7 +171,7 @@ void Riscv::handleSupervisorTrap()
     {
         // interrupt: yes; cause code: supervisor external interrupt (PLIC; could be keyboard)
         console_handler();
-    } else
+    }else
     {
         // unexpected trap cause
     }

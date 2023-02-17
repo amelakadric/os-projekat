@@ -62,7 +62,7 @@ int MemoryAllocator::free(void* p){
 
     //mergeovanje nazad
     if(newFreeBlock->prev) {
-        if ((char *) newFreeBlock->prev + newFreeBlock->prev->size * MEM_BLOCK_SIZE == (char *) newFreeBlock) {
+        if (((char *)newFreeBlock->prev + newFreeBlock->prev->size * MEM_BLOCK_SIZE) == (char *)newFreeBlock) {
             newFreeBlock->prev->size += newFreeBlock->size;
             newFreeBlock->prev->next = newFreeBlock->next;
             if (newFreeBlock->next) {
@@ -73,7 +73,7 @@ int MemoryAllocator::free(void* p){
     }
     //mergovanje napred
     if(newFreeBlock->next!= nullptr) {
-        if ((char *) newFreeBlock + newFreeBlock->size * MEM_BLOCK_SIZE == (char *) newFreeBlock->next) {
+        if (((char *) newFreeBlock + newFreeBlock->size * MEM_BLOCK_SIZE) == (char *) newFreeBlock->next) {
             newFreeBlock->size += newFreeBlock->next->size;
             if (newFreeBlock->next->next) {
                 FreeBlockHeader* nextBlock=newFreeBlock->next;
@@ -91,5 +91,7 @@ void MemoryAllocator::initMemoryAllocator() {
     size_t size = align((char*)HEAP_END_ADDR - (char*)HEAP_START_ADDR)/MEM_BLOCK_SIZE;
     freeBlockHead->size=size;
     tail=freeBlockHead;
+    freeBlockHead->next= nullptr;
+    freeBlockHead->prev= nullptr;
 }
 

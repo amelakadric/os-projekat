@@ -4,9 +4,6 @@
 #include "syscall_c.h"
 
 
-void* operator new (size_t n);
-void operator delete (void* p);
-
 class Thread {
     using Body = void (*)(void*);
 public:
@@ -48,5 +45,8 @@ public:
     static char getc ();
     static void putc (char c);
 };
+
+void* operator new (size_t n);
+void operator delete (void* p);
 
 #endif

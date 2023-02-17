@@ -1,28 +1,5 @@
 #include "../h/syscall_cpp.hpp"
 
-void *operator new(size_t n)
-{
-    return MemoryAllocator::malloc(n);
-//    return mem_alloc(n);
-}
-
-void *operator new[](size_t n)
-{
-    return MemoryAllocator::malloc(n);
-//   return mem_alloc(n);
-}
-
-void operator delete(void *p)
-{
-    MemoryAllocator::free(p);
-//    mem_free(p);
-}
-
-void operator delete[](void *p)
-{
-    MemoryAllocator::free(p);
-//    mem_free(p);
-}
 
 int Thread::start (){
     thread_start(&myHandle);
@@ -67,4 +44,28 @@ char Console::getc() {
 
 void Console::putc(char c) {
     __putc(c);
+}
+
+void *operator new(size_t n)
+{
+    return MemoryAllocator::malloc(n);
+//    return mem_alloc(n);
+}
+
+void *operator new[](size_t n)
+{
+    return MemoryAllocator::malloc(n);
+//   return mem_alloc(n);
+}
+
+void operator delete(void *p)
+{
+    MemoryAllocator::free(p);
+//    mem_free(p);
+}
+
+void operator delete[](void *p)
+{
+    MemoryAllocator::free(p);
+//    mem_free(p);
 }

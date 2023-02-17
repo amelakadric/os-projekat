@@ -1,7 +1,10 @@
 #include "../h/Ksemaphore.hpp"
 
 void Ksemaphore::block() {
-    blocked.addLast(TCB::running);
+    TCB* tr=TCB::running;
+    blocked.addLast(tr);
+    TCB::running=Scheduler::get();
+    TCB::contextSwitch(&tr->context, &TCB::running->context);
 }
 
 void Ksemaphore::unblock() {
@@ -12,11 +15,10 @@ void Ksemaphore::unblock() {
 int Ksemaphore::wait() {
     if(--val<0){
         block();
-//        TCB::yieldWithoutScheduler();
-        TCB::dispatchWithoutScheduler();
+//        TCB::dispatchWithoutScheduler();
         return 0;
     }
-    return -1;
+    return 0;
 }
 
 int Ksemaphore::signal() {
@@ -24,7 +26,7 @@ int Ksemaphore::signal() {
         unblock();
         return 0;
     }
-    return -1;
+    return 1;
 }
 
 Ksemaphore *Ksemaphore::createSemaphore(unsigned int init) {
@@ -35,8 +37,8 @@ Ksemaphore *Ksemaphore::createSemaphore(unsigned int init) {
 
 int Ksemaphore::closeSemaphore(){
     TCB* tcb;
-    while(this->blocked.peekFirst()!= nullptr){
-        tcb=this->blocked.removeFirst();
+    while((tcb= blocked.peekFirst())!= nullptr){
+        tcb=blocked.removeFirst();
         Scheduler::put(tcb);
     }
     return 0;
