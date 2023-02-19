@@ -18,7 +18,6 @@ int thread_start(thread_t* handle);
 
 int thread_create2 (thread_t* handle, void(*start_routine)(void*), void* arg);
 
-
 int sem_open (
         sem_t* handle,
         unsigned init

@@ -74,7 +74,6 @@ void Riscv::handleSupervisorTrap()
             //thread_start()
             TCB** tcb;
             __asm__ volatile ("mv %[a1], a1" : [a1] "=r"(tcb));
-//            TCB::putInScheduler(*tcb);
             Scheduler::put(*tcb);
         }
         else if (a0 == 0x0000000000000015UL){
@@ -127,10 +126,15 @@ void Riscv::handleSupervisorTrap()
             //sem_wait a1-id
 
             int a;
-            Ksemaphore* a1;
-            __asm__ volatile ("mv %[a1], a1" : [a1] "=r"(a1));
+            Ksemaphore* a7;
+            __asm__ volatile ("mv %[a7], a7" : [a7] "=r"(a7));
 
-            a = a1->wait();
+            if(a7!= nullptr){
+                a = a7->wait();
+            }
+            else{
+                a=-1;
+            }
 
 
             __asm__ volatile("mv a0, %0"::"r"(a));
@@ -141,8 +145,12 @@ void Riscv::handleSupervisorTrap()
 
             uint64 a;
             Ksemaphore* sem;
-            __asm__ volatile ("mv %[a1], a1" : [a1] "=r"(sem));
-            a=sem->signal();
+            __asm__ volatile ("mv %[a7], a7" : [a7] "=r"(sem));
+            if(sem!= nullptr) {
+                a = sem->signal();
+            }else {
+                a=1;
+            }
 
             __asm__ volatile("mv a0, %0"::"r"(a));
         }

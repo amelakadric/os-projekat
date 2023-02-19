@@ -87,7 +87,7 @@ int sem_close (sem_t handle){
 }
 
 int sem_wait (sem_t id){
-    __asm__ volatile("mv a1, %0"::"r"(id));
+    __asm__ volatile("mv a7, %0"::"r"(id));
     __asm__ volatile("li a0, 0x23");
     __asm__ volatile("ecall");
     uint64 a0;
@@ -98,7 +98,7 @@ int sem_wait (sem_t id){
 }
 
 int sem_signal(sem_t id){
-    __asm__ volatile("mv a1, %0"::"r"(id));
+    __asm__ volatile("mv a7, %0"::"r"(id));
     __asm__ volatile("li a0, 0x24");
     __asm__ volatile("ecall");
     uint64 a0;

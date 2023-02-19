@@ -35,10 +35,11 @@ Ksemaphore *Ksemaphore::createSemaphore(unsigned int init) {
 
 int Ksemaphore::closeSemaphore(){
     TCB* tcb;
-    while((tcb= blocked.peekFirst())!= nullptr){
-        tcb=blocked.removeFirst();
+    while((tcb=blocked.removeFirst())!= nullptr){
+//        tcb=blocked.removeFirst();
         Scheduler::put(tcb);
     }
+
     return 0;
 }
 void Ksemaphore::operator delete(void *p) {

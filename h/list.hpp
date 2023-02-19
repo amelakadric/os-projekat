@@ -60,7 +60,7 @@ public:
         if (!head) { tail = 0; }
 
         T *ret = elem->data;
-        delete elem;
+//        delete elem;
         return ret;
     }
 

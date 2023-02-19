@@ -5,6 +5,7 @@
 #ifndef XV6_CONSUMERPRODUCER_C_API_TEST_H
 #define XV6_CONSUMERPRODUCER_C_API_TEST_H
 
+#include "../h/syscall_c.h"
 
 #include "buffer.hpp"
 
@@ -35,7 +36,6 @@ void producerKeyboard(void *arg) {
     threadEnd = 1;
     data->buffer->put('!');
 
-//    printString("ovde si");
     sem_signal(data->wait);
 }
 
@@ -78,7 +78,8 @@ void consumer(void *arg) {
         int key = data->buffer->get();
         putc(key);
     }
-  sem_signal(data->wait);
+
+    sem_signal(data->wait);
 }
 
 void producerConsumer_C_API() {
@@ -128,7 +129,6 @@ void producerConsumer_C_API() {
                       i > 0 ? producer : producerKeyboard,
                       data + i);
     }
-
 
     thread_dispatch();
 
