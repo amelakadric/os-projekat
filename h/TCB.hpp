@@ -27,6 +27,7 @@ public:
 
     Body getBody() { return this->body;}
     void* getArg() {return this->arg;}
+    uint64 getId() {return this->id;}
 
     static void* operator new (size_t n);
     static void operator delete (void* p);
@@ -61,6 +62,7 @@ public:
         context.sp =(stack != nullptr ? (uint64) &stack[DEFAULT_STACK_SIZE] : 0);
         timeSlice=timeSlicee;
         finished= false;
+        id=threadId++;
     }
 
 private:
@@ -77,6 +79,7 @@ private:
     Context context;
     uint64 timeSlice;
     bool finished;
+    uint64 id;
 
     friend class Riscv;
     friend class Ksemaphore;
@@ -95,6 +98,7 @@ private:
 
 
     static uint64 timeSliceCounter;
+    static uint64 threadId;
 
 //    static uint64 constexpr STACK_SIZE = 1024;
 //    static uint64 constexpr TIME_SLICE = 2;

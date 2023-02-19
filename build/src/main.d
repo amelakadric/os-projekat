@@ -4,7 +4,9 @@ build/src/main.o: src/main.cpp src/../h/riscv.hpp src/../h/../h/TCB.hpp \
  src/../h/../h/MemoryAllocator.hpp src/../h/../lib/console.h \
  src/../h/../h/Ksemaphore.hpp src/../h/../h/TCB.hpp \
  src/../h/../h/MemoryAllocator.hpp src/../h/syscall_c.h src/../h/TCB.hpp \
- src/../h/Ksemaphore.hpp
+ src/../h/Ksemaphore.hpp src/../test/printing.hpp \
+ src/../test/../h/syscall_c.h src/../test/../h/TCB.hpp \
+ src/../test/../h/Ksemaphore.hpp
 
 src/../h/riscv.hpp:
 
@@ -33,3 +35,11 @@ src/../h/syscall_c.h:
 src/../h/TCB.hpp:
 
 src/../h/Ksemaphore.hpp:
+
+src/../test/printing.hpp:
+
+src/../test/../h/syscall_c.h:
+
+src/../test/../h/TCB.hpp:
+
+src/../test/../h/Ksemaphore.hpp:

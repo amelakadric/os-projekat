@@ -154,6 +154,15 @@ void Riscv::handleSupervisorTrap()
 
             __asm__ volatile("mv a0, %0"::"r"(a));
         }
+        else if (a0 == 0x0000000000000016UL){
+            uint64 a;
+            TCB* t;
+            __asm__ volatile ("mv %[a1], a1" : [a1] "=r"(t));
+            a= t->getId();
+
+            __asm__ volatile("mv a0, %0"::"r"(a));
+
+        }
 
 //        TCB::dispatch();
 

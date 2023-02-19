@@ -114,4 +114,14 @@ void putc(char c){
     __putc(c);
 }
 
+int getThreadId(thread_t t) {
+    __asm__ volatile("mv a1, %0"::"r"(t));
+    __asm__ volatile("li a0, 0x16");
+    __asm__ volatile("ecall");
+    uint64 a0;
+    __asm__ volatile ("mv %[a0], a0" : [a0] "=r"(a0));
+    thread_dispatch();
+    return a0;
+}
+
 
