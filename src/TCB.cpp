@@ -3,6 +3,7 @@
 #include "../h/riscv.hpp"
 
 TCB *TCB::running = nullptr;
+Ksemaphore* TCB::semWaitAllThreads = Ksemaphore::createSemaphore(0);
 
 uint64 TCB::timeSliceCounter = 0;
 
@@ -81,6 +82,11 @@ void TCB::dispatchWithoutScheduler(){
     TCB *old = running;
     running = Scheduler::get();
     TCB::contextSwitch(&old->context, &running->context);
+}
+
+void TCB::join() {
+    if(semWaitAllThreads== nullptr)semWaitAllThreads=Ksemaphore::createSemaphore(0);
+    semWaitAllThreads->wait();
 }
 
 void TCB::operator delete(void *p) {

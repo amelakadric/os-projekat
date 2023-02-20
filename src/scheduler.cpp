@@ -28,3 +28,17 @@ void Scheduler::operator delete(void *p) {
     MemoryAllocator::free(p);
     return;
 }
+
+bool Scheduler::isEmpty() {
+    bool a=true;
+    if(readyThreadQueue.peekFirst())a=false;
+    return a;
+}
+
+bool Scheduler::oneLeft() {
+    bool a=false;
+    TCB* t= Scheduler::get();
+    if(isEmpty())a=true;
+    Scheduler::put(t);
+    return a;
+}

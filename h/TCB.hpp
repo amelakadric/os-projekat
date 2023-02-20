@@ -44,8 +44,10 @@ public:
     static void yieldWithoutScheduler();
 
     static TCB *running;
+    static Ksemaphore* semWaitAllThreads;
 
-//    body(body),
+
+    //    body(body),
 //            arg(arg),
 //            stack(body != nullptr ? (uint64*)MemoryAllocator::malloc(sizeof(uint64) * DEFAULT_STACK_SIZE) : nullptr),
 //    context({(uint64) &threadWrapper,
@@ -95,6 +97,8 @@ private:
     static void dispatchWithoutScheduler();
 
     static int exitThread();
+
+    void join();
 
 
     static uint64 timeSliceCounter;

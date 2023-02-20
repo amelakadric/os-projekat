@@ -11,10 +11,16 @@ bool ffinishedA = false;
 bool ffinishedB = false;
 bool ffinishedC = false;
 
+Ksemaphore* semA;
+
 
 void workerBodyA(void* arg) {
-    for (uint64 i = 0; i < 10; i++) {
-        printString("A: i="); printInt(i); printString("\n"); printInt(getThreadId(TCB::running));printString(" ");
+
+//    join(TCB::running);
+
+    for (uint64 i = 0; i < 5; i++) {
+
+        printString("A: i="); printInt(i); printString("\n"); printInt(getThreadId(TCB::running)); printString(" ");
         for (uint64 j = 0; j < 10000; j++) {
             for (uint64 k = 0; k < 30000; k++) { /* busy wait */ }
 //            thread_dispatch();
@@ -25,7 +31,10 @@ void workerBodyA(void* arg) {
 }
 
 void workerBodyB(void* arg) {
-    for (uint64 i = 0; i < 10; i++) {
+
+    join(TCB::running);
+
+    for (uint64 i = 0; i < 5; i++) {
         printString("B: i="); printInt(i); printString("\n"); printInt(getThreadId(TCB::running));printString(" ");
         for (uint64 j = 0; j < 10000; j++) {
             for (uint64 k = 0; k < 30000; k++) { /* busy wait */ }
@@ -38,7 +47,7 @@ void workerBodyB(void* arg) {
 
 void workerBodyC(void* arg) {
 
-    for (uint64 i = 0; i < 10; i++) {
+    for (uint64 i = 0; i < 5; i++) {
         printString("C: i="); printInt(i); printString("\n"); printInt(getThreadId(TCB::running));printString(" ");
         for (uint64 j = 0; j < 10000; j++) {
             for (uint64 k = 0; k < 30000; k++) { /* busy wait */ }
@@ -68,17 +77,14 @@ int main() {
     thread_create(&threads[2], workerBodyC, nullptr);
     printString("ThreadC created\n");
 
-    while (!(ffinishedA && ffinishedB && ffinishedC)) {
+    while (!Scheduler::isEmpty()) {
         thread_dispatch();
     }
 
-
-//    for (uint64 i = 0; i < 10; i++) {
-////        uint64 id= getThreadId(TCB::running);
-//        printInt(getThreadId(TCB::running));
-//    }
-
-
+    TCB::semWaitAllThreads->signal();
+    while (!(ffinishedA && ffinishedB && ffinishedC)) {
+        thread_dispatch();
+    }
 
 //    userMain();
 

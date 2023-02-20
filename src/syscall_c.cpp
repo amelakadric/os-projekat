@@ -125,3 +125,8 @@ int getThreadId(thread_t t) {
 }
 
 
+void join(thread_t t) {
+    __asm__ volatile("mv a1, %0"::"r"(t));
+    __asm__ volatile("li a0, 0x17");
+    __asm__ volatile("ecall");
+}
