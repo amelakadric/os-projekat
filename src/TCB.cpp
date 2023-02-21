@@ -12,6 +12,8 @@ uint64 TCB::threadId=0;
 TCB *TCB::createThread(Body body, void* arg)
 {
     TCB* t = (TCB*)new TCB(body, arg, DEFAULT_TIME_SLICE);
+    t->sem = Ksemaphore::createSemaphore(0);
+
     if (body != nullptr) {
         Scheduler::put(t);
     }
@@ -59,11 +61,19 @@ void TCB::dispatch()
     TCB::contextSwitch(&old->context, &running->context);
 }
 
+
 void TCB::threadWrapper(){
     Riscv::popSppSpie();
     running->body(running->arg);
     running->setFinished(true);
-    TCB::yield();
+//    while(!running->sem->semEmpty()) {
+//        running->sem->signal();
+//    }
+//    TCB::yield();
+//    TCB::dispatch();
+    __asm__ volatile ("li a0, 0x13");
+    __asm__ volatile ("ecall");
+
 }
 
 int TCB::exitThread() {
@@ -85,8 +95,7 @@ void TCB::dispatchWithoutScheduler(){
 }
 
 void TCB::join() {
-    if(semWaitAllThreads== nullptr)semWaitAllThreads=Ksemaphore::createSemaphore(0);
-    semWaitAllThreads->wait();
+    sem->wait();
 }
 
 void TCB::operator delete(void *p) {
@@ -97,6 +106,16 @@ void TCB::operator delete(void *p) {
 
 void *TCB::operator new(size_t n) {
     return MemoryAllocator::malloc(sizeof (TCB));
+
+}
+
+void TCB::kill(TCB* t) {
+    TCB* tmp;
+    while((tmp=Scheduler::get())!=t){
+        Scheduler::put(tmp);
+    }
+    tmp->setFinished(true);
+
 
 }
 

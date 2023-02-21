@@ -13,10 +13,15 @@ class Ksemaphore{
 public:
 
     int wait();
+
     int signal();
     int value() const {return val;}
     static Ksemaphore* createSemaphore(unsigned init=1);
     int closeSemaphore();
+    bool semEmpty(){
+        if(blocked.getNum())return false;
+        return true;
+    }
 
 protected:
     void block();

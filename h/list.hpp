@@ -17,19 +17,23 @@ private:
         T *data;
         Elem *next;
 
+
         Elem(T *data, Elem *next) : data(data), next(next) {}
     };
 
     Elem *head, *tail;
+    int num;
 
 public:
-    List() : head(0), tail(0) {}
+    List() : head(0), tail(0), num(0){}
 
     List(const List<T> &) = delete;
 
     List<T> &operator=(const List<T> &) = delete;
     static void* operator new (size_t n);
     static void operator delete (void* p);
+
+    int getNum(){return num;}
 
     void addFirst(T *data)
     {
@@ -49,6 +53,8 @@ public:
         {
             head = tail = elem;
         }
+        num++;
+
     }
 
     T *removeFirst()
@@ -61,6 +67,7 @@ public:
 
         T *ret = elem->data;
 //        delete elem;
+        num--;
         return ret;
     }
 

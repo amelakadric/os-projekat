@@ -10,15 +10,17 @@ void userMain();
 bool ffinishedA = false;
 bool ffinishedB = false;
 bool ffinishedC = false;
+thread_t threads[3];
 
-Ksemaphore* semA;
+
 
 
 void workerBodyA(void* arg) {
 
-//    join(TCB::running);
 
-    for (uint64 i = 0; i < 5; i++) {
+//    join(threads[1]);
+//    __putc('Q');
+    for (uint64 i = 0; i < 2; i++) {
 
         printString("A: i="); printInt(i); printString("\n"); printInt(getThreadId(TCB::running)); printString(" ");
         for (uint64 j = 0; j < 10000; j++) {
@@ -32,9 +34,7 @@ void workerBodyA(void* arg) {
 
 void workerBodyB(void* arg) {
 
-    join(TCB::running);
-
-    for (uint64 i = 0; i < 5; i++) {
+    for (uint64 i = 0; i < 2; i++) {
         printString("B: i="); printInt(i); printString("\n"); printInt(getThreadId(TCB::running));printString(" ");
         for (uint64 j = 0; j < 10000; j++) {
             for (uint64 k = 0; k < 30000; k++) { /* busy wait */ }
@@ -46,8 +46,9 @@ void workerBodyB(void* arg) {
 }
 
 void workerBodyC(void* arg) {
+    TCB::running->kill(threads[0]);
 
-    for (uint64 i = 0; i < 5; i++) {
+    for (uint64 i = 0; i < 2; i++) {
         printString("C: i="); printInt(i); printString("\n"); printInt(getThreadId(TCB::running));printString(" ");
         for (uint64 j = 0; j < 10000; j++) {
             for (uint64 k = 0; k < 30000; k++) { /* busy wait */ }
@@ -62,12 +63,13 @@ void workerBodyC(void* arg) {
 int main() {
     MemoryAllocator::initMemoryAllocator();
 
-    TCB::running= TCB::createThread(nullptr, nullptr);
 
     Riscv::w_stvec((uint64) &Riscv::supervisorTrap);
     Riscv::ms_sstatus(Riscv::SSTATUS_SIE);
 
-    thread_t threads[3];
+    TCB::running= TCB::createThread(nullptr, nullptr);
+
+
     thread_create(&threads[0], workerBodyA, nullptr);
     printString("ThreadA created\n");
 
@@ -77,14 +79,10 @@ int main() {
     thread_create(&threads[2], workerBodyC, nullptr);
     printString("ThreadC created\n");
 
-    while (!Scheduler::isEmpty()) {
+    while (!(ffinishedB && ffinishedC)) {
         thread_dispatch();
     }
 
-    TCB::semWaitAllThreads->signal();
-    while (!(ffinishedA && ffinishedB && ffinishedC)) {
-        thread_dispatch();
-    }
 
 //    userMain();
 

@@ -5,6 +5,8 @@
 #include "scheduler.hpp"
 #include "MemoryAllocator.hpp"
 
+
+
 typedef TCB* thread_t;
 
 
@@ -40,11 +42,13 @@ public:
     static void putInScheduler(TCB* tcb);
 
     static void yield();
+    void kill(TCB* t);
 
     static void yieldWithoutScheduler();
 
     static TCB *running;
     static Ksemaphore* semWaitAllThreads;
+    Ksemaphore* sem;
 
 
     //    body(body),
@@ -88,8 +92,6 @@ private:
 
 
 
-
-
     static void contextSwitch(Context *oldContext, Context *runningContext);
 
     static void dispatch();
@@ -99,6 +101,7 @@ private:
     static int exitThread();
 
     void join();
+
 
 
     static uint64 timeSliceCounter;

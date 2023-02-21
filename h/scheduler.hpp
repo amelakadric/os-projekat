@@ -49,8 +49,11 @@ public:
     static TCB *get();
 
     static void put(TCB *tcb);
+    static void getThread(TCB * tcb);
+    static TCB* findThread(TCB* tcb);
 
-    static bool isEmpty();
+
+        static bool isEmpty();
     static bool oneLeft();
     Scheduler* getInstance();
 
